@@ -4,7 +4,7 @@ import { createStackNavigator } from '@react-navigation/stack';
 import { NavigationContainer } from '@react-navigation/native';
 import LoginScreen from '../pages/auth/LoginScreen';
 import RegisterScreen from '../pages/auth/RegisterScreen';
-import HomeScreen from '../pages/home/HomeScreen';
+import BottomNavigation from './BottomNavigation';
 
 const Stack = createStackNavigator();
 
@@ -28,9 +28,9 @@ const StackNavigatior = () => {
                 />
                 <Stack.Screen
                     name="Tab"
-                    component={ HomeScreen }
+                    component={ BottomNavigation }
                     options={{
-                        headerShown: false
+                        headerShown: false,
                     }}
                 />
             </Stack.Navigator>

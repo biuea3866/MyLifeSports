@@ -1,11 +1,12 @@
 import * as React from 'react';
-import { StyleSheet, Text, ScrollView } from 'react-native';
+import { StyleSheet, ScrollView } from 'react-native';
 import palette from '../../styles/palette';
+import HomeContent from './components/HomeContent';
 
 const HomeScreen = () => {
     return(
         <ScrollView style={ styles.container }>
-            <Text>Home Screen</Text>
+            <HomeContent />
         </ScrollView>
     );
 };

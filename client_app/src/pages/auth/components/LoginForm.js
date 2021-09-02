@@ -6,10 +6,16 @@ import StyledTextInput from '../../../styles/common/StyledTextInput';
 import palette from '../../../styles/palette';
 
 const LoginForm = ({ navigation }) => {
-    const toSignUpScreen = e => {
+    const onPressSignUpScreen = e => {
         e.preventDefault();
 
-        navigation.navigate('SignUp')
+        navigation.navigate('SignUp');
+    };
+
+    const onPressMainNavigator = e => {
+        e.preventDefault();
+
+        navigation.navigate('Tab');
     };
 
     return(
@@ -25,10 +31,11 @@ const LoginForm = ({ navigation }) => {
                 placeholderTextColor={ palette.gray[5] }
             />
             <StyledFullButton 
+                onPress={ onPressMainNavigator }
                 text="Sign in"
             />
             <StyledBorderButton
-                onPress= { toSignUpScreen } 
+                onPress= { onPressSignUpScreen } 
                 text="Sign up"
             />
         </View>

@@ -1,11 +1,16 @@
 import * as React from 'react';
 import { StyleSheet, Text, ScrollView } from 'react-native';
 import palette from '../../styles/palette';
+import PostContent from './components/PostContent';
+import PostHeader from './components/PostHeader';
+import PostNav from './components/PostNav';
 
 const PostScreen = () => {
     return(
         <ScrollView style={ styles.container }>
-            <Text>Post Screen</Text>
+            <PostHeader />
+            <PostNav />
+            <PostContent />
         </ScrollView>
     );
 };
