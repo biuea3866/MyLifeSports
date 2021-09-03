@@ -1,21 +1,28 @@
 import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { 
+    ScrollView, 
+    StyleSheet 
+} from 'react-native';
+import MyPageHeader from './components/MyPageHeader';
+import MyPageContent from './components/MyPageContent';
+import MyPageFooter from './components/MyPageFooter';
 import palette from '../../styles/palette';
 
 const MyPageScreen = () => {
     return(
-        <View style={ styles.container }>
-            <Text>MyPage Screen</Text>
-        </View>
+        <ScrollView style={ styles.container }>
+            <MyPageHeader />
+            <MyPageContent />
+            <MyPageFooter />
+        </ScrollView>
     );
 };
 
 const styles = StyleSheet.create({
     container: {
+        flexDirection: 'row',
         flex: 1,
-        backgroundColor: palette.gray[1],
-        alignItems: 'center',
-        justifyContent: 'center',
+        backgroundColor: palette.white[0],
     },
 });
 

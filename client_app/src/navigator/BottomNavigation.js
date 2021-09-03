@@ -4,15 +4,14 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import palette from '../styles/palette';
 import HomeScreen from '../pages/home/HomeScreen';
 import PostStackNavigation from './post/PostStackNavigation';
-import MapScreen from '../pages/map/MapScreen';
-import MyPageScreen from '../pages/user/MyPageScreen';
+import MapStackNavigation from './map/MapStackNavigation';
+import MyPageStackNavigation from './user/MyPageStackNavigation';
 
 const Tab = createBottomTabNavigator();
 
 const BottomNavigation = ({ route }) => {
     return(
         <Tab.Navigator
-            
             screenOptions={({ route }) => ({
                 tabBarIcon: ({ focused, color }) => {
                     var iconName;
@@ -75,14 +74,20 @@ const BottomNavigation = ({ route }) => {
             />
             <Tab.Screen 
                 name="Map"
+                options={{
+                    headerShown: false,
+                }}
                 children={
-                    () => <MapScreen />
+                    () => <MapStackNavigation />
                 }
             />
             <Tab.Screen 
                 name="MyPage"
+                options={{
+                    headerShown: false
+                }}
                 children={
-                    () => <MyPageScreen />
+                    () => <MyPageStackNavigation />
                 }
             />
         </Tab.Navigator>

@@ -1,21 +1,21 @@
 import * as React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
-import palette from '../../styles/palette';
+import { View, StyleSheet } from 'react-native';
+import MapHeader from './components/MapHeader';
+import NaverMap from './components/NaverMap';
 
 const MapScreen = () => {
     return(
         <View style={ styles.container }>
-            <Text>Map Screen</Text>
+            <MapHeader />
+            <NaverMap />
         </View>
     );
 };
 
 const styles = StyleSheet.create({
     container: {
+        flexDirection: 'column',
         flex: 1,
-        backgroundColor: palette.gray[1],
-        alignItems: 'center',
-        justifyContent: 'center',
     },
 });
 
