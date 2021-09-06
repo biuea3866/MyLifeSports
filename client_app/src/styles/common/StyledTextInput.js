@@ -6,6 +6,8 @@ const StyledTextInput = ({
     name,
     placeholder,
     placeholderTextColor,
+    inputAccessoryViewID,
+    onChange,
 }) => {
     return(
         <TextInput
@@ -13,6 +15,8 @@ const StyledTextInput = ({
             inputAccessoryViewID={ name }
             placeholder={ placeholder }
             placeholderTextColor={ placeholderTextColor }
+            inputAccessoryViewID={ inputAccessoryViewID }
+            onChange={ onChange }
         />
     );
 };

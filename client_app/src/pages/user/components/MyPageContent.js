@@ -11,18 +11,24 @@ import palette from '../../../styles/palette';
 const MyPageContent = () => {
     const navigation = useNavigation();
     const onPressToInformation = e => {
+        e.preventDefault();
+
         navigation.navigate('Information', {
             name: 'Information'
         });
     };
 
     const onPressToMyRental = e => {
+        e.preventDefault();
+        
         navigation.navigate("MyRental", {
             name: 'MyRental'
         });
     };
 
     const onPressToMyPost = e => {
+        e.preventDefault();
+        
         navigation.navigate("MyPost", {
             name: 'MyPost'
         });
