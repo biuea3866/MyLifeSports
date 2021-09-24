@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { User, UserDocument, UserSchema } from 'src/schema/user.schema';
+import { User, UserDocument } from 'src/schema/user.schema';
 import { Model } from 'mongoose';
 import { UserDto } from 'src/dto/user.dto';
 import { statusConstants } from 'src/constants/status.constant';
@@ -11,37 +11,15 @@ import { hash } from 'src/util/util.hash';
 @Injectable()
 export class UserService {
     constructor(@InjectModel(User.name) private userModel: Model<UserDocument>) {}
-    
-    public async login(userDto: UserDto): Promise<any> {
-        try {
-            const user = await this.userModel.findOne({ email: userDto.email });
-            
-            return Object.assign({
-                status: statusConstants.SUCCESS,
-                payload: Builder(UserDto).email(user.email)
-                                         .nickname(user.nickname)
-                                         .phoneNumber(user.phoneNumber)
-                                         .createdAt(user.createdAt)
-                                         .userId(user.userId)
-                                         .build(),
-                message: "Successfully Login"
-            });
-        } catch(err) {
-            return Object.assign({
-                status: statusConstants.ERROR,
-                payload: null,
-                message: err
-            });
-        }
-    }
 
     public async register(userDto: UserDto): Promise<any> {
-        const user = new this.userModel(Builder(UserDto).email(userDto.email)
-                                                        .password(await hash(userDto.password))
-                                                        .nickname(userDto.nickname)
-                                                        .phoneNumber(userDto.phoneNumber)
-                                                        .userId(uuid())
-                                                        .createdAt(new Date().toDateString()));
+        const user = new this.userModel(Builder(User).email(userDto.email)
+                                                     .encryptedPwd(await hash(userDto.password))
+                                                     .nickname(userDto.nickname)
+                                                     .phoneNumber(userDto.phoneNumber)
+                                                     .userId(uuid())
+                                                     .createdAt(new Date().toDateString())
+                                                     .build());
 
         try {
             const result = await user.save();

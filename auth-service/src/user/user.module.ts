@@ -8,6 +8,7 @@ import { UserService } from './user.service';
     name: User.name,
     schema: UserSchema
   }])],
-  providers: [UserService]
+  providers: [UserService],
+  exports: [UserService]
 })
 export class UserModule {}
