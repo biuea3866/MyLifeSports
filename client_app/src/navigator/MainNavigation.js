@@ -12,30 +12,27 @@ const StackNavigatior = () => {
     return(
         <NavigationContainer>
             <Stack.Navigator>
-                <Stack.Screen
-                    name="SignIn"
-                    component={ LoginScreen }
-                    options={{
-                        headerShown: false,
-                    }}
+                <Stack.Screen name="SignIn"
+                              component={ LoginScreen }
+                              options={{
+                                  headerShown: false,
+                              }}
                 />
-                <Stack.Screen
-                    name="SignUp"
-                    component={ RegisterScreen }
-                    options={{
-                        title: 'Sign Up'
-                    }}
+                <Stack.Screen name="SignUp"
+                              component={ RegisterScreen }
+                              options={{
+                                  title: 'Sign Up'
+                              }}
                 />
-                <Stack.Screen
-                    name="Tab"
-                    component={ BottomNavigation }
-                    options={{
-                        headerShown: false,
-                    }}
+                <Stack.Screen name="Tab"
+                              component={ BottomNavigation }
+                              options={{
+                                  headerShown: false,
+                              }}
                 />
             </Stack.Navigator>
         </NavigationContainer>
-    )
-}
+    );
+};
 
 export default StackNavigatior;

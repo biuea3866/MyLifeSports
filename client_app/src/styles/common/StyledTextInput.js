@@ -3,16 +3,14 @@ import { StyleSheet, TextInput } from 'react-native';
 import palette from '../palette';
 
 const StyledTextInput = ({
-    name,
+    inputAccessoryViewID,
     placeholder,
     placeholderTextColor,
-    inputAccessoryViewID,
     onChange,
 }) => {
     return(
         <TextInput
             style={ styles.input }
-            inputAccessoryViewID={ name }
             placeholder={ placeholder }
             placeholderTextColor={ placeholderTextColor }
             inputAccessoryViewID={ inputAccessoryViewID }

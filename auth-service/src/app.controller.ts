@@ -38,7 +38,7 @@ export class AppController {
             }
             
             return await Object.assign({
-                status: HttpStatus.OK,
+                status: HttpStatus.OK,  
                 token: result.access_token,
                 payload: Builder(ResponseUser).email(result.payload.email)
                                               .nickname(result.payload.nickname)

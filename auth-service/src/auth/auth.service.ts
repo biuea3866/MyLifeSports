@@ -25,7 +25,7 @@ export class AuthService {
     ): Promise<any> {
         const user = await this.loadByEmail(email);
 
-        if(user && await isHashValid(password, user.encryptedPwd)) {  
+        if(user && await isHashValid(password, user.encryptedPwd)) { 
             return user;
         }
 

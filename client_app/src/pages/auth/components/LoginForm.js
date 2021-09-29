@@ -1,24 +1,31 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { View, StyleSheet } from 'react-native';
 import StyledBorderButton from '../../../styles/common/StyledBorderButton';
 import StyledFullButton from '../../../styles/common/StyledFullButton';
 import StyledTextInput from '../../../styles/common/StyledTextInput';
 import palette from '../../../styles/palette';
-import { changeField, initializeForm } from '../../../modules/auth';
+import { changeField, initializeForm, login } from '../../../modules/auth';
+import ErrorMessage from '../../../styles/common/ErrorMessage';
 
 const LoginForm = ({ navigation }) => {
     const dispatch = useDispatch();
-    const { form } = useSelector(({ auth }) => ({
+    const [error, setError] = useState(null);
+    const { 
+        form,
+        auth,
+        authError, 
+    } = useSelector(({ auth }) => ({
         form: auth.login,
+        auth: auth.auth,
+        authError: auth.authError,
     }));
 
     const onChange = e => {
         const inputAccessoryViewID = e.target._internalFiberInstanceHandleDEV.memoizedProps.inputAccessoryViewID;
         const value = e.nativeEvent.text;
 
-        dispatch(
-            changeField({
+        dispatch(changeField({
                 form: 'login',
                 key: inputAccessoryViewID,
                 value
@@ -26,17 +33,43 @@ const LoginForm = ({ navigation }) => {
         );
     };
 
-    const onPressSignUpScreen = e => {
+    const toSignUpScreen = e => {
         e.preventDefault();
 
         navigation.navigate('SignUp');
     };
 
-    const onPressMainNavigator = e => {
+    const onLogin = e => {
         e.preventDefault();
 
-        navigation.navigate('Tab');
+        const { 
+            email,
+            password
+        } = form;
+        
+        dispatch(login({ 
+            email, 
+            password
+        }));
     };
+
+    useEffect(() => {
+        if(auth) {
+            if(auth.status === 200) {            
+                setError(null);
+    
+                dispatch(initializeForm('login'));
+                    
+                navigation.navigate('Tab');
+            }
+        }
+
+        if(authError) {
+            setError("Not valid user, check again email and password");
+
+            return;
+        }
+    }, [auth, authError, dispatch]);
 
     useEffect(() => {
         dispatch(initializeForm('login'));
@@ -58,12 +91,13 @@ const LoginForm = ({ navigation }) => {
                 onChange={ onChange }
                 value={ form.password }
             />
+            { error && <ErrorMessage text={ error } /> }
             <StyledFullButton 
-                onPress={ onPressMainNavigator }
+                onPress={ onLogin }
                 text="Sign in"
             />
             <StyledBorderButton
-                onPress= { onPressSignUpScreen } 
+                onPress= { toSignUpScreen } 
                 text="Sign up"
             />
         </View>

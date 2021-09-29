@@ -20,6 +20,14 @@ export class UserService {
                                                      .userId(uuid())
                                                      .createdAt(new Date().toDateString())
                                                      .build());
+        
+        if(await this.userModel.findOne({ email: userDto.email })) {
+            return Object.assign({
+                status: statusConstants.ERROR,
+                payload: null,
+                message: "Duplicated Email! retry register"
+            });
+        }
 
         try {
             const result = await user.save();
@@ -50,7 +58,7 @@ export class UserService {
                                          .createdAt(user.createdAt)
                                          .userId(user.userId)
                                          .build(),
-                message: "Successfully Login"
+                message: "Successfully get user information in database"
             });
         } catch(err) {
             return Object.assign({

@@ -3,17 +3,14 @@ import { Text, StyleSheet, TouchableOpacity } from 'react-native';
 import palette from '../palette';
 
 const StyledFullButton = ({ 
-    text,
     onPress, 
+    text,
 }) => {
     return(
-        <TouchableOpacity
-            style={ styles.button }
-            onPress={ onPress }
+        <TouchableOpacity style={ styles.button }
+                          onPress={ onPress }
         >
-            <Text
-                style={ styles.buttonText }
-            >
+            <Text style={ styles.buttonText }>
                 { text }
             </Text>
         </TouchableOpacity>

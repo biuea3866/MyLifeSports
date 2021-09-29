@@ -37,9 +37,8 @@ const ImageIcon = ({ name, text }) => {
     return(
         <View style={ styles.container }>
             <TouchableOpacity>
-                <Image
-                    style={ styles.icon }
-                    source={ name }
+                <Image style={ styles.icon }
+                       source={ name }
                 />
             </TouchableOpacity>
             <Text style={ styles.font }>

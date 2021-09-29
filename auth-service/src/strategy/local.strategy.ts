@@ -19,11 +19,11 @@ export class LocalStrategy extends PassportStrategy(Strategy) {
         const user = await this.authService.validateUser(email, password);
 
         if(!user) {
-            return Object.assign({
+            Object.assign({
                 status: statusConstants.ERROR,
                 payload: null,
-                message: "Not valid user"
-            })
+                message: "Not match password"
+            });
         }
 
         return user;
