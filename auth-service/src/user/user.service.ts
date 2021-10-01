@@ -49,7 +49,7 @@ export class UserService {
     public async getUser(userId: string): Promise<any> {
         try {
             const user = await this.userModel.findOne({ userId: userId });
-            
+
             return Object.assign({
                 status: statusConstants.SUCCESS,
                 payload: Builder(UserDto).email(user.email)

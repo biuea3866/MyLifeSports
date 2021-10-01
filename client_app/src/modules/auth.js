@@ -1,6 +1,6 @@
 import { createAction, handleActions } from "redux-actions";
 import produce from "immer";
-import { takeLatest } from "@redux-saga/core/effects";
+import { takeLatest } from "redux-saga/effects";
 import createRequestSaga, { 
     createRequestActionTypes 
 } from "../lib/createRequestSaga";
@@ -14,12 +14,16 @@ const [
     REGISTER_SUCCESS, 
     REGISTER_FAILURE
 ] = createRequestActionTypes('auth/REGISTER');
-
 const [
     LOGIN, 
     LOGIN_SUCCESS, 
     LOGIN_FAILURE
 ] = createRequestActionTypes('auth/LOGIN');
+const [
+    INFO,
+    INFO_SUCCESS,
+    INFO_FAILURE,
+] = createRequestActionTypes('auth/INFO');
 
 export const changeField = createAction(
     CHANGE_FIELD, ({ 
@@ -52,13 +56,16 @@ export const login = createAction(LOGIN, ({
     email,
     password,
 }));
+export const info = createAction(INFO, userId => userId);
 
 const registerSaga = createRequestSaga(REGISTER, authAPI.register);
 const loginSaga = createRequestSaga(LOGIN, authAPI.login);
+const infoSaga = createRequestSaga(INFO, authAPI.getUser);
 
 export function* authSaga() {
     yield takeLatest(REGISTER, registerSaga);
     yield takeLatest(LOGIN, loginSaga);
+    yield takeLatest(INFO, infoSaga);
 }
 
 const initialState = {
@@ -103,6 +110,15 @@ const auth = handleActions(
             auth
         }),
         [LOGIN_FAILURE]: (state, { payload: error }) => ({
+            ...state,
+            authError: error,
+        }),
+        [INFO_SUCCESS]: (state, { payload: auth }) => ({
+            ...state,
+            authError: null,
+            auth,
+        }),
+        [INFO_FAILURE]: (state, { payload: error }) => ({
             ...state,
             authError: error,
         }),

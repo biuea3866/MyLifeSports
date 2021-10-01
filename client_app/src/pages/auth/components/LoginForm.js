@@ -1,12 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { View, StyleSheet } from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import StyledBorderButton from '../../../styles/common/StyledBorderButton';
 import StyledFullButton from '../../../styles/common/StyledFullButton';
 import StyledTextInput from '../../../styles/common/StyledTextInput';
 import palette from '../../../styles/palette';
-import { changeField, initializeForm, login } from '../../../modules/auth';
+import { changeField, info, initializeForm, login } from '../../../modules/auth';
 import ErrorMessage from '../../../styles/common/ErrorMessage';
+import { check } from '../../../modules/user';
 
 const LoginForm = ({ navigation }) => {
     const dispatch = useDispatch();
@@ -15,10 +17,15 @@ const LoginForm = ({ navigation }) => {
         form,
         auth,
         authError, 
-    } = useSelector(({ auth }) => ({
+        user,
+    } = useSelector(({ 
+        auth,
+        user
+     }) => ({
         form: auth.login,
         auth: auth.auth,
         authError: auth.authError,
+        user: user.user,
     }));
 
     const onChange = e => {
@@ -55,13 +62,9 @@ const LoginForm = ({ navigation }) => {
 
     useEffect(() => {
         if(auth) {
-            if(auth.status === 200) {            
-                setError(null);
-    
-                dispatch(initializeForm('login'));
-                    
-                navigation.navigate('Tab');
-            }
+            const { userId } = auth;
+
+            dispatch(check(userId));
         }
 
         if(authError) {
@@ -71,6 +74,37 @@ const LoginForm = ({ navigation }) => {
         }
     }, [auth, authError, dispatch]);
 
+    useEffect(async () => {
+        if(user) {
+            try {
+                setError(null);
+        
+                dispatch(initializeForm('login'));
+            
+                await AsyncStorage.setItem('user', JSON.stringify(user))
+            
+                dispatch(initializeForm('auth'));
+
+                navigation.navigate('Tab');
+            } catch(e) {
+                console.log(e);
+            }
+        }
+    }, [user]);
+
+    useEffect(async () => {
+        if(auth) {
+            if(auth.token) {
+                const { token } = auth;
+                const { userId } = auth;
+
+                await AsyncStorage.setItem('token', JSON.stringify(token));
+                
+                dispatch(info(userId));
+            }
+        }
+    }, [dispatch, auth]);
+    
     useEffect(() => {
         dispatch(initializeForm('login'));
     }, [dispatch]);

@@ -1,21 +1,28 @@
 import React from 'react';
 import { 
-    StyleSheet, 
-    View, 
+    StyleSheet,
     Text, 
     TouchableOpacity 
 } from 'react-native';
+import { useDispatch } from 'react-redux';
+import { useNavigation } from '@react-navigation/core';
+import { logout } from '../../../modules/user';
 import palette from '../../../styles/palette';
 
 const LogoutButton = () => {
+    const navigation = useNavigation();
+    const dispatch = useDispatch();
     const onLogout = e => {
         e.preventDefault();
+
+        dispatch(logout());
+
+        navigation.navigate('SignIn');
     };
 
     return(
-        <TouchableOpacity
-            style={ styles.container }
-            onPress={ onLogout }
+        <TouchableOpacity style={ styles.container }
+                          onPress={ onLogout }
         >
             <Text style={ styles.text }>
                 Logout

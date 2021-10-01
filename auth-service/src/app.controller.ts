@@ -102,19 +102,68 @@ export class AppController {
             }
 
             return await Object.assign({
-                        status: HttpStatus.OK,
-                        payload: Builder(ResponseUser).email(result.payload.email)
-                                                      .nickname(result.payload.nickname)
-                                                      .phoneNumber(result.payload.phoneNumber)
-                                                      .userId(result.payload.userId)
-                                                      .build(),
-                        message: "Get User Information",
+                status: HttpStatus.OK,
+                payload: Builder(ResponseUser).email(result.payload.email)
+                                              .nickname(result.payload.nickname)
+                                              .phoneNumber(result.payload.phoneNumber)
+                                              .userId(result.payload.userId)
+                                              .build(),
+                message: "Get User Information",
             });
         } catch(err) {
             return await Object.assign({
                 status: statusConstants.ERROR,
                 payload: null,
                 message: "Error message: " + err,
+            });
+        }
+    }
+    
+    @UseGuards(JwtAuthGuard)
+    @Get(':userId/check')
+    public async check(@Param('userId') userId: string): Promise<any> {
+        try {
+            if(userId === null) {
+                return await Object.assign({
+                    status: HttpStatus.UNAUTHORIZED,
+                    payload: null,
+                    message: "Not valid user"
+                });
+            }
+
+            const result: any = await this.userService.getUser(userId);
+
+            return await Object.assign({
+                status: HttpStatus.OK,
+                payload: Builder(ResponseUser).email(result.payload.email)
+                                              .nickname(result.payload.nickname)
+                                              .phoneNumber(result.payload.phoneNumber)
+                                              .userId(result.payload.userId)
+                                              .build(),
+                message: "Check user!"
+            }); 
+        } catch(err) {
+            return await Object.assign({
+                status: statusConstants.ERROR,
+                payload: null,
+                message: "Error message: " + err,
+            });
+        }
+    }
+
+    @Post('logout')
+    public async logout(): Promise<any> {
+        try {
+            return await Object.assign({
+                status: HttpStatus.NO_CONTENT,
+                payload: null,
+                message: "Success logout!"
+            });
+        } catch(err) {
+            return await Object.assign({
+                status: statusConstants.ERROR,
+                payload: null,
+                message: "Error message: " + err
             });
         }
     }

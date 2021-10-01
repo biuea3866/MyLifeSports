@@ -4,16 +4,19 @@ import {
     View,
     Text
 } from 'react-native';
+import { useSelector } from 'react-redux';
 import palette from '../../../styles/palette';
 
 const MyPageHeader = () => {
+    const { user } = useSelector(({ user }) => ({ user: user.user }));
+
     return(
         <View style={ styles.container }>
             <Text style={ styles.text }>
-                nickname
+                { user ? user.nickname : null }
             </Text>
             <Text>
-                email
+                { user ? user.email : null }
             </Text>
         </View>
     );
