@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
+import { Builder } from 'builder-pattern';
 import { Model } from 'mongoose';
 import { statusConstants } from 'src/constants/status.constant';
 import { MapsDto } from 'src/dto/maps.dto';
@@ -7,7 +8,7 @@ import { Maps, MapsDocument } from 'src/schema/maps.schema';
 
 @Injectable()
 export class WayfindingService {
-    constructor(@InjectModel(Maps.name) private mapsModel: Model<MapsDocument>) {}
+    constructor(@InjectModel(Maps.name) private mapsModel: Model<MapsDocument>,) {}
 
     public async getAll(): Promise<any> {
         try {
@@ -17,7 +18,7 @@ export class WayfindingService {
                 return await Object.assign({
                     status: statusConstants.ERROR,
                     payload: null,
-                    message: "Database error!"
+                    message: "Wayfinding-service: Not data!"
                 });
             }
 
@@ -30,39 +31,52 @@ export class WayfindingService {
             return await Object.assign({
                 status: statusConstants.SUCCESS,
                 payload: result,
-                message: "Successfully get list of map in database"
+                message: "Success transaction"
             });
         } catch(err) {
             return await Object.assign({
                 status: statusConstants.ERROR,
                 payload: null,
-                message: "Database error!"
+                message: "Wayfinding-service: " + err
             });
         }
     }
 
-    public async getOne(objectId: string): Promise<any> {
+    public async getOne(_id: string): Promise<any> {
         try {
-            const map = await this.mapsModel.findOne({ objectId: objectId });
+            const map = await this.mapsModel.findById(_id);
 
             if(!map) {
                 return await Object.assign({
                     status: statusConstants.ERROR,
                     payload: null,
-                    message: "Database error!"
+                    message: "Wayfinding-service: Not data!"
                 });
             }
-
+            
             return await Object.assign({
                 status: statusConstants.SUCCESS,
-                payload: map,
-                message: "Successfully get one data in database"
+                payload: Builder(MapsDto)._id(String(map._id))
+                                         .ycode(map.ycode)
+                                         .type_nm(map.type_nm)
+                                         .gu_nm(map.gu_nm)
+                                         .parking_lot(map.parking_lot)
+                                         .bigo(map.bigo)
+                                         .xcode(map.xcode)
+                                         .tel(map.tel)
+                                         .addr(map.addr)
+                                         .in_out(map.in_out)
+                                         .home_page(map.home_page)
+                                         .edu_yn(map.edu_yn)
+                                         .nm(map.nm)
+                                         .build(),
+                message: "Success transaction"
             });
         } catch(err) {
             return await Object.assign({
                 status: statusConstants.ERROR,
                 payload: null,
-                message: "Database error!"
+                message: "Wayfinding-service: " + err
             });
         }
     }
@@ -75,7 +89,7 @@ export class WayfindingService {
                 return await Object.assign({
                     status: statusConstants.ERROR,
                     payload: null,
-                    message: "Database error!"
+                    message: "Wayfinding-service: Not data!"
                 });
             }
 
@@ -88,13 +102,13 @@ export class WayfindingService {
             return await Object.assign({
                 status: statusConstants.SUCCESS,
                 payload: result,
-                message: "Successfully get list of map in database"
+                message: "Success transaction"
             });
         } catch(err) {
             return await Object.assign({
                 status: statusConstants.ERROR,
                 payload: null,
-                message: "Database error!"
+                message: "Wayfinding-service: " + err
             });
         }
     }
@@ -107,7 +121,7 @@ export class WayfindingService {
                 return await Object.assign({
                     status: statusConstants.ERROR,
                     payload: null,
-                    message: "Database error!"
+                    message: "Wayfinding-service: Not data!"
                 });
             }
 
@@ -120,13 +134,13 @@ export class WayfindingService {
             return await Object.assign({
                 status: statusConstants.SUCCESS,
                 payload: result,
-                message: "Successfully get list of map in database"
+                message: "Success transaction"
             });
         } catch(err) {
             return await Object.assign({
                 status: statusConstants.ERROR,
                 payload: null,
-                message: "Database error!"
+                message: "Wayfinding-service: " + err
             });
         }
     }
@@ -142,7 +156,7 @@ export class WayfindingService {
                 return await Object.assign({
                     status: statusConstants.ERROR,
                     payload: null,
-                    message: "Database error!"
+                    message: "Wayfinding-service: Not data!"
                 });
             }
 
@@ -155,13 +169,13 @@ export class WayfindingService {
             return await Object.assign({
                 status: statusConstants.SUCCESS,
                 payload: result,
-                message: "Successfully get list of map in database"
+                message: "Success transaction"
             });
         } catch(err) {
             return await Object.assign({
                 status: statusConstants.ERROR,
                 payload: null,
-                message: "Database error!"
+                message: "Wayfinding-service: " + err
             });
         }
     }

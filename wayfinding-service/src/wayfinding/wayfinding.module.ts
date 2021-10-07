@@ -4,10 +4,12 @@ import { Maps, MapsSchema } from 'src/schema/maps.schema';
 import { WayfindingService } from './wayfinding.service';
 
 @Module({
-  imports: [MongooseModule.forFeature([{
-    name: Maps.name,
-    schema: MapsSchema
-  }])],
+  imports: [
+    MongooseModule.forFeature([{
+      name: Maps.name,
+      schema: MapsSchema
+    }]),
+  ],
   providers: [WayfindingService],
   exports: [WayfindingService],
 })

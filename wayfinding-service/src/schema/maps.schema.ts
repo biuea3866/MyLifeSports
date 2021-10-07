@@ -1,12 +1,13 @@
 import { Prop, Schema, SchemaFactory } from "@nestjs/mongoose";
 import { Transform } from "class-transformer";
+import { SchemaTypes, Types } from "mongoose";
 
 export type MapsDocument = Maps & Document;
 
 @Schema()
 export class Maps {
-    @Transform(({ value }) => value.toString())
-    _id: String;
+    @Prop({ type: SchemaTypes.ObjectId, ref: Maps.name})
+    _id: Types.ObjectId;
     
     @Prop({ required: true })
     ycode: Number;
