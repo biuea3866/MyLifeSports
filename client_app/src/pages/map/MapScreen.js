@@ -8,6 +8,12 @@ const MapScreen = () => {
         <View style={ styles.container }>
             <MapHeader />
             <NaverMap />
+            {
+                ({ state }) => (
+                    state.visible &&
+                    <MapFooter />
+                )
+            }
         </View>
     );
 };
