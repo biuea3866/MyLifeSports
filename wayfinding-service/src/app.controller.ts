@@ -151,8 +151,6 @@ export class AppController {
     @MessagePattern({ cmd: 'GET_LIST_GU_TYPE' })
     public async getListGuNmAndTypeNm(data: any): Promise<any> {
         try {
-            
-            console.log(data);
             const result: any = await this.wayfindingService.getListGuNmAndTypeNm(data[0], data[1]);
             
 

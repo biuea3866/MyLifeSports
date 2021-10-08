@@ -17,7 +17,7 @@ export class AppController {
         private readonly userService: UserService,    
     ) {}
 
-    @UseGuards(JwtAuthGuard)
+    // @UseGuards(JwtAuthGuard)
     @Get('status')
     public async status(): Promise<string> {
         return "auth-service is working successfully";
@@ -38,12 +38,12 @@ export class AppController {
             }
             
             return await Object.assign({
-                status: HttpStatus.OK,  
-                token: result.access_token,
+                status: HttpStatus.OK,
                 payload: Builder(ResponseUser).email(result.payload.email)
                                               .nickname(result.payload.nickname)
                                               .phoneNumber(result.payload.phoneNumber)
                                               .userId(result.payload.userId)
+                                              .token(result.access_token)
                                               .build(),
                 message: 'Successfully Login'
             });

@@ -18,4 +18,7 @@ export class ResponseUser {
 
     @IsString()
     createdAt: string;
+
+    @IsString()
+    token: string;
 }

@@ -3,7 +3,7 @@
   "version": "0.0.1",
   "private": true,
   "scripts": {
-    "android": "react-native run-android adb reverse tcp:8081 tcp:7000",
+    "android": "react-native run-android adb reverse tcp:8081 tcp:8000",
     "ios": "react-native run-ios",
     "start": "react-native start",
     "test": "jest",
@@ -44,5 +44,5 @@
   "jest": {
     "preset": "react-native"
   },
-  "proxy": "http://10.0.2.2:7000/"
+  "proxy": "http://10.0.2.2:8000/"
 }
