@@ -1,32 +1,22 @@
 import React from "react";
 import { StyleSheet, Text, View } from "react-native";
+import { useSelector } from "react-redux";
 import palette from "../../../styles/palette";
-import { MapConsumer } from "../context/MapContext";
 
 const Info = () => {
+    const { map } = useSelector(({ map }) => ({ map: map.map }));
+
     return(
         <View style={ styles.container } >
             <View style={ styles.title } >
-                <MapConsumer>
-                    {
-                        ({ state }) => {
-                            <Text style={ styles.place_name } >
-                                { state.map.nm }
-                            </Text>
-                        }
-                    }
-                </MapConsumer>
+                <Text style={ styles.place_name } >
+                    { map.nm }
+                </Text>
             </View>
             <View style={ styles.address } >
-                <MapConsumer>
-                    {
-                        ({ state }) => {
-                            <Text>
-                                { state.map.addr }
-                            </Text>
-                        }
-                    }
-                </MapConsumer>
+                <Text>
+                    { map.addr }
+                </Text>
             </View>
         </View>
     );

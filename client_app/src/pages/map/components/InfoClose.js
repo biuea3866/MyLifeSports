@@ -4,11 +4,9 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import { useDispatch, useSelector } from "react-redux";
 import { changeState } from "../../../modules/marker";
 import palette from "../../../styles/palette";
-import { MapConsumer } from "../context/MapContext";
 
 const InfoClose = () => {
     const dispatch = useDispatch();
-    const { visible } = useSelector(({ marker }) => ({ visible: marker.visible }));
     const onClose = e => {
         e.preventDefault();
 
@@ -18,15 +16,9 @@ const InfoClose = () => {
     return (
         <View style={ styles.container } >
             <View style={ styles.type_article }>
-                {/* <MapConsumer>
-                    {
-                        ({ state }) => (
-                            <Text style={ styles.type_font }>
-                                { state.map.type_nm }
-                            </Text>
-                        )
-                    }
-                </MapConsumer> */}
+                <Text style={ styles.type_font }>
+                    { map.type_nm }
+                </Text>
             </View>
             <TouchableOpacity onPress={ onClose } >
                 <Icon name={ 'ios-close-sharp' } 
