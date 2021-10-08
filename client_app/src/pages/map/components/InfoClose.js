@@ -1,18 +1,24 @@
 import React from "react"
-import { StyleSheet, TouchableOpacity, View } from "react-native"
-import { Icon } from "react-native-vector-icons/Icon";
+import { StyleSheet, Text, TouchableOpacity, View } from "react-native"
+import Icon from 'react-native-vector-icons/Ionicons';
+import { useDispatch, useSelector } from "react-redux";
+import { changeState } from "../../../modules/marker";
 import palette from "../../../styles/palette";
 import { MapConsumer } from "../context/MapContext";
 
 const InfoClose = () => {
-    const onClose = actions => {
-        actions.setVisible(false);
+    const dispatch = useDispatch();
+    const { visible } = useSelector(({ marker }) => ({ visible: marker.visible }));
+    const onClose = e => {
+        e.preventDefault();
+
+        dispatch(changeState(false));
     };
 
     return (
         <View style={ styles.container } >
             <View style={ styles.type_article }>
-                <MapConsumer>
+                {/* <MapConsumer>
                     {
                         ({ state }) => (
                             <Text style={ styles.type_font }>
@@ -20,20 +26,14 @@ const InfoClose = () => {
                             </Text>
                         )
                     }
-                </MapConsumer>
+                </MapConsumer> */}
             </View>
-            <MapConsumer>
-                { 
-                    ({ actions }) => (
-                        <TouchableOpacity onPress={ onClose(actions) } >
-                            <Icon name={ 'ios-close-sharp' } 
-                                  size={ 25 }
-                                  color={ palette.blue[4] }
-                            />
-                        </TouchableOpacity>
-                    )
-                }
-            </MapConsumer>
+            <TouchableOpacity onPress={ onClose } >
+                <Icon name={ 'ios-close-sharp' } 
+                      size={ 25 }
+                      color={ palette.blue[4] }
+                />
+            </TouchableOpacity>
         </View>
     );
 };

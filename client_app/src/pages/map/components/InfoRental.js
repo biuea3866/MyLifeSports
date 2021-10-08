@@ -1,7 +1,7 @@
 import React from "react";
 import { useNavigation } from '@react-navigation/native';
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
-import { MapConsumer } from "../context/MapContext";
+import palette from "../../../styles/palette";
 
 const InfoRental = () => {
     const navigation = useNavigation();
@@ -15,19 +15,13 @@ const InfoRental = () => {
 
     return(
         <View style={ styles.container } >
-            <MapConsumer>
-                {
-                    ({ state }) => (
-                        <TouchableOpacity style={ styles.rental_button } 
-                                          onPress={ onRental(state) }
-                        >
-                            <Text style={ styles.rental_text } >
-                                대관하기
-                            </Text>
-                        </TouchableOpacity>
-                    )
-                }
-            </MapConsumer>
+            <TouchableOpacity style={ styles.rental_button } 
+                              onPress={ onRental }
+            >
+                <Text style={ styles.rental_text } >
+                    대관하기
+                </Text>
+            </TouchableOpacity>
         </View>
     );
 };
@@ -38,7 +32,7 @@ const styles = StyleSheet.create({
         justifyContent: 'flex-end',
         alignItems: 'center',
         width: '100%',
-        height: '10%',
+        height: '15%',
         marginTop: 13,
         paddingRight: 10
     },
@@ -54,4 +48,6 @@ const styles = StyleSheet.create({
     rental_text: {
         fontWeight: 'bold'
     }
-})
+});
+
+export default InfoRental;

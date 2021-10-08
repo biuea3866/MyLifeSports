@@ -1,3 +1,4 @@
+import React from "react";
 import { StyleSheet, Text, View } from "react-native";
 import palette from "../../../styles/palette";
 import { MapConsumer } from "../context/MapContext";
@@ -34,7 +35,7 @@ const Info = () => {
 const styles = StyleSheet.create({
     container: {
         width: '100%',
-        height: '55%',
+        height: '45%',
         borderBottomColor: palette.gray[3],
         borderBottomWidth: 1,
     },

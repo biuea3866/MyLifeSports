@@ -3,12 +3,14 @@ import { StyleSheet, View } from "react-native";
 import palette from "../../../styles/palette";
 import InfoClose from "./InfoClose";
 import Info from "./Info";
+import InfoRental from "./InfoRental";
 
 const MapFooter = () => {
     return(
         <View style={ styles.container }>
             <InfoClose />
             <Info />
+            <InfoRental />
         </View>
     );
 };

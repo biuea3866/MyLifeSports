@@ -3,13 +3,14 @@ import { StyleSheet } from 'react-native';
 import Loading from '../../../styles/common/Loading';
 import NaverMapView from 'react-native-nmap';
 import CustomMarker from './CustomMarker';
+import { useSelector } from 'react-redux';
 
 const NaverMap = () => {
+    const { visible } = useSelector(({ marker }) => ({ visible: marker.visible }));
     const defaultLocation = {
         latitude: 37.6009735, 
         longitude: 126.9484764
     };
-
     const dummyData = [
         {"ycode":37.6144169,"type_nm":"구기체육관","gu_nm":"중랑구","parking_lot":"주차 가능(일반 18면 / 장애인 2면)","bigo":"","xcode":127.0842018,"tel":"949-5577","addr":"중랑구 숙선옹주로 66","in_out":"실내","home_page":"http://www.jungnangimc.or.kr/","edu_yn":"유","nm":"묵동다목적체육관"},
         {"ycode":37.573171,"type_nm":"골프연습장","gu_nm":"중랑구","parking_lot":"용마폭포공원 주차장 이용(시간당 1,200원 / 5분당 100원)","bigo":"","xcode":127.0858392,"tel":"490-0114 ","addr":"중랑구 용마산로 217","in_out":"실내","home_page":"http://www.jjang.or.kr/jjang/","edu_yn":"유","nm":"중랑청소년수련관 골프연습장"},
@@ -24,7 +25,11 @@ const NaverMap = () => {
     
 
     return(
-        <NaverMapView style={ styles.container }
+        <NaverMapView style={ 
+                          visible ? 
+                          styles.openInfoContainer :
+                          styles.closeInfoContainer
+                      }
                       showsMyLocationButton={ true }
                       center={{
                           ...defaultLocation,
@@ -36,9 +41,8 @@ const NaverMap = () => {
                 dummyData ?
                 dummyData.map(
                     (map, i) => {
-                        return <CustomMarker 
-                                    key={ i }
-                                    data={ map } 
+                        return <CustomMarker key={ i }
+                                             data={ map } 
                                />
                     }
                 ) : <Loading />
@@ -48,9 +52,13 @@ const NaverMap = () => {
 };
 
 const styles = StyleSheet.create({
-    container: {
+    openInfoContainer: {
         width: '100%',
-        height: '100%',
+        height: '60%'
+    },
+    closeInfoContainer: {
+        width: '100%',
+        height: '90%',
     },
 });
 
