@@ -5,7 +5,7 @@ import { createStore, applyMiddleware } from 'redux';
 import { composeWithDevTools } from 'redux-devtools-extension';
 import createSagaMiddleware from 'redux-saga';
 import rootReducer, { rootSaga } from './src/modules';
-import { saveUser } from './src/modules/user';
+import { check, saveUser } from './src/modules/user';
 import StackNavigatior from './src/navigator/MainNavigation';
 
 const sagaMiddleware = createSagaMiddleware();

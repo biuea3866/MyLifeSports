@@ -3,11 +3,13 @@ import { ActivityIndicator, StyleSheet, View } from "react-native";
 import palette from "../palette";
 
 const Loading = () => {
-    <View style={ styles.container }>
-        <ActivityIndicator size="large" 
-                           color={ palette.bloe[0] }
-        />
-    </View>
+    return (
+        <View style={ styles.container }>
+            <ActivityIndicator size="large" 
+                               color={ palette.blue[0] }
+            />
+        </View>
+    );
 };
 
 const styles = StyleSheet.create({

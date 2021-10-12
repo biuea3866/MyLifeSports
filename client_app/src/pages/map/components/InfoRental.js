@@ -5,11 +5,8 @@ import palette from "../../../styles/palette";
 
 const InfoRental = () => {
     const navigation = useNavigation();
-    const onRental = state => {
-        // navigation.navigate("Rental", {
-        //     name: "Rental",
-        //     data: state.map
-        // })
+    const onRental = () => {
+        navigation.navigate("Detail");
     };
 
     return(
