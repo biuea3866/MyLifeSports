@@ -4,7 +4,7 @@ import auth, { authSaga } from './auth';
 import loading from "./loading";
 import user, { userSaga } from "./user";
 import marker from './marker';
-import map, { mapSaga } from "./map";
+import map from "./map";
 
 const rootReducer = combineReducers({
     auth,
@@ -18,7 +18,6 @@ export function* rootSaga() {
     yield all([
         authSaga(),
         userSaga(),
-        mapSaga()
     ]);
 };
 

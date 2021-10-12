@@ -6,6 +6,7 @@ import { changeState } from "../../../modules/marker";
 import palette from "../../../styles/palette";
 
 const InfoClose = () => {
+    const { map } = useSelector(({ map }) => ({ map: map.map }));
     const dispatch = useDispatch();
     const onClose = e => {
         e.preventDefault();

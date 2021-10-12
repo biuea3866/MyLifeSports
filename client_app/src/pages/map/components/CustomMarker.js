@@ -5,7 +5,7 @@ import { Marker } from "react-native-nmap";
 import markerImage from '../../../assets/img/markerImage.png';
 import palette from "../../../styles/palette";
 import { changeState } from "../../../modules/marker";
-import { readMap } from "../../../modules/map";
+import { changeMap } from "../../../modules/map";
 
 const CustomMarker = ({ data }) => {
     const dispatch = useDispatch();
@@ -16,9 +16,9 @@ const CustomMarker = ({ data }) => {
     const onVisible = e => {
         e.preventDefault();
 
-        dispatch(readMap(map._id));
-
         dispatch(changeState(true));
+
+        dispatch(changeMap(data));
     };
 
     return(

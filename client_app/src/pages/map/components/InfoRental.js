@@ -10,7 +10,6 @@ const InfoRental = () => {
         //     name: "Rental",
         //     data: state.map
         // })
-        navigation.navigate("Register");
     };
 
     return(
