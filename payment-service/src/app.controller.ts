@@ -13,11 +13,11 @@ export class AppController {
     @Post('payment')
     public async payment(@Body() vo: RequestPayment): Promise<any> {
         try {
-            const result: any = this.paymentService.create(Builder(PaymentDto).paymentName(vo.paymentName)
-                                                                              .rentalId(vo.rentalId)
-                                                                              .payer(vo.payer)
-                                                                              .price(vo.price)
-                                                                              .build());
+            const result: any = await this.paymentService.create(Builder(PaymentDto).paymentName(vo.paymentName)
+                                                                                    .rentalId(vo.rentalId)
+                                                                                    .payer(vo.payer)
+                                                                                    .price(vo.price)
+                                                                                    .build());
 
             if(result.status === statusConstants.ERROR) {
                 return await Object.assign({

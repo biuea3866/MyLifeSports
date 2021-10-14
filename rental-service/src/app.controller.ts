@@ -5,6 +5,7 @@ import { RequestRental } from "./vo/request.rental";
 import { ResponseRental } from "./vo/response.rental";
 import { Builder } from 'builder-pattern';
 import { RentalDto } from "./dto/rental.dto";
+import { EventPattern, MessagePattern, Payload } from "@nestjs/microservices";
 
 @Controller('rental-service')
 export class AppController {
@@ -150,5 +151,10 @@ export class AppController {
                 message: e
             });
         }
+    }
+
+    @EventPattern('PAYMENT_RESPONSE')
+    public async responsePayment(data: any): Promise<any> {
+        console.log(data);
     }
 }
