@@ -9,11 +9,13 @@ import { Builder } from 'builder-pattern';
 import { v4 as uuid } from 'uuid';
 import { ResponseRental } from 'src/vo/response.rental';
 import { status } from 'src/constants/rental.status';
+import { ClientProxy } from '@nestjs/microservices';
 
 @Injectable()
 export class RentalService {
     constructor(
         @InjectModel(Rental.name) private rentalModel: Model<RentalDocument>,    
+        @Inject('payment-service') private readonly client: ClientProxy
     ) {}
 
     public create(dto: RentalDto): Observable<any> {
@@ -33,7 +35,12 @@ export class RentalService {
             
             entity.save();
 
-            return this.client.send({ cmd: 'PAYMENT', entity });
+            return this.client.send({ cmd: 'PAYMENT' }, [
+                entity.mapName,
+                entity.rentalId,
+                entity.borrower,
+                entity.price
+            ]);
         } catch(err) {
             return Object.assign({
                 status: statusConstants.ERROR,

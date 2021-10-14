@@ -7,7 +7,7 @@ export class ResponsePayment {
 
     paymentId: string;
 
-    price: string;
+    price: number;
 
     createdAt: string;                                  
 }

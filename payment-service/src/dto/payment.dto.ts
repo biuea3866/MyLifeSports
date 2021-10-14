@@ -1,4 +1,4 @@
-import { IsString } from "class-validator"
+import { IsNumber, IsString } from "class-validator"
 
 export class PaymentDto {
     @IsString()
@@ -13,8 +13,8 @@ export class PaymentDto {
     @IsString()
     paymentId: string;
 
-    @IsString()
-    price: string;
+    @IsNumber()
+    price: number;
 
     @IsString()
     createdAt: string;                                  
