@@ -5,7 +5,7 @@ export type RentalDocument = Rental & Document;
 
 @Schema()
 export class Rental {
-    @Prop({ type: SchemaTypes.ObjectId, ref: Rental.name })
+    @Prop({ required: true })
     rentalId: string;
 
     @Prop({ required: true })

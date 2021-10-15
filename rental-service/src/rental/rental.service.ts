@@ -1,7 +1,6 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-import { Observable } from 'rxjs';
 import { statusConstants } from 'src/constants/status.constant';
 import { RentalDto } from 'src/dto/rental.dto';
 import { Rental, RentalDocument } from 'src/schema/rental.schema';
@@ -18,29 +17,60 @@ export class RentalService {
         @Inject('payment-service') private readonly client: ClientProxy
     ) {}
 
-    public create(dto: RentalDto): Observable<any> {
+    public async create(dto: RentalDto): Promise<any> {
         try {
-            const entity = new this.rentalModel(Builder(Rental).rentalId(uuid())
-                                                               .price(dto.price)
-                                                               .borrower(dto.borrower)
-                                                               .tel(dto.tel)
-                                                               .userId(dto.userId)
-                                                               .date(dto.date)
-                                                               .time(dto.time)
-                                                               .mapId(dto.mapId)
-                                                               .mapName(dto.mapName)
-                                                               .status(dto.status)
-                                                               .createdAt(new Date().toDateString())
-                                                               .build());
-            
-            entity.save();
+            const entity: any = await new this.rentalModel(Builder(Rental).rentalId(uuid())
+                                                                          .price(dto.price)
+                                                                          .borrower(dto.borrower)
+                                                                          .tel(dto.tel)
+                                                                          .userId(dto.userId)
+                                                                          .date(dto.date)
+                                                                          .time(dto.time)
+                                                                          .mapId(dto.mapId)
+                                                                          .mapName(dto.mapName)
+                                                                          .status(status.PENDING)
+                                                                          .createdAt(new Date().toDateString())
+                                                                          .build())
+                                                                          .save();
 
-            return this.client.send({ cmd: 'PAYMENT' }, [
-                entity.mapName,
-                entity.rentalId,
-                entity.borrower,
-                entity.price
-            ]);
+            console.log(entity);
+
+            if(!entity) {
+                return await Object.assign({
+                    status: statusConstants.ERROR,
+                    payload: null,
+                    message: "rental-service: database error" 
+                });
+            }
+
+            console.log(Builder(RentalDto).rentalId(entity.rentalId)
+            .price(entity.price)
+            .borrower(entity.borrower)
+            .tel(entity.tel)
+            .userId(entity.userId)
+            .date(entity.date)
+            .time(entity.time)
+            .mapId(entity.mapId)
+            .mapName(entity.mapName)
+            .status(entity.status)
+            .createdAt(entity.createdAt)
+            .build())
+            return await Object.assign({
+                status: statusConstants.SUCCESS,
+                payload: Builder(RentalDto).rentalId(entity.rentalId)
+                                           .price(entity.price)
+                                           .borrower(entity.borrower)
+                                           .tel(entity.tel)
+                                           .userId(entity.userId)
+                                           .date(entity.date)
+                                           .time(entity.time)
+                                           .mapId(entity.mapId)
+                                           .mapName(entity.mapName)
+                                           .status(entity.status)
+                                           .createdAt(entity.createdAt)
+                                           .build(),
+                message: "Successful transaction"
+            });
         } catch(err) {
             return Object.assign({
                 status: statusConstants.ERROR,
@@ -119,7 +149,7 @@ export class RentalService {
         }
     }
 
-    public async deleteRental(rentalId): Promise<any> {
+    public async expiredRental(rentalId): Promise<any> {
         try {
             const result  = await this.rentalModel.updateOne({ rentalId: rentalId }, { $set: { status: status.EXPIRED }});
             
@@ -135,6 +165,58 @@ export class RentalService {
                 statusCode: statusConstants.SUCCESS,
                 payload: null,
                 message: "Success delete"
+            });
+        } catch(err) {
+            return await Object.assign({
+                statusCode: statusConstants.ERROR,
+                payload: null,
+                message: "rental-service database: " + err,
+            });
+        }
+    }
+
+    public async deleteRental(dto: RentalDto): Promise<any> {
+        try {
+            const result  = await this.rentalModel.deleteOne({ rentalId: dto.rentalId });
+            
+            if(!result) {
+                return await Object.assign({
+                    statusCode: statusConstants.ERROR,
+                    payload: null,
+                    message: "Not exist data",
+                });
+            }
+
+            return await Object.assign({
+                statusCode: statusConstants.SUCCESS,
+                payload: null,
+                message: "Success delete"
+            });
+        } catch(err) {
+            return await Object.assign({
+                statusCode: statusConstants.ERROR,
+                payload: null,
+                message: "rental-service database: " + err,
+            });
+        }
+    }
+
+    public async completeRental(dto: RentalDto): Promise<any> {
+        try {
+            const result  = await this.rentalModel.updateOne({ rentalId: dto.rentalId }, { $set: { status: status.BEING }});
+            
+            if(!result) {
+                return await Object.assign({
+                    statusCode: statusConstants.ERROR,
+                    payload: null,
+                    message: "Not exist data",
+                });
+            }
+
+            return await Object.assign({
+                statusCode: statusConstants.SUCCESS,
+                payload: null,
+                message: "Success update"
             });
         } catch(err) {
             return await Object.assign({

@@ -5,35 +5,37 @@ import { RequestRental } from "./vo/request.rental";
 import { ResponseRental } from "./vo/response.rental";
 import { Builder } from 'builder-pattern';
 import { RentalDto } from "./dto/rental.dto";
-import { EventPattern, MessagePattern, Payload } from "@nestjs/microservices";
+import { EventPattern } from "@nestjs/microservices";
 
 @Controller('rental-service')
 export class AppController {
     constructor(private readonly rentalService: RentalService) {}
 
     @Post('rental')
-    public rental(@Body() vo: RequestRental): any {
+    public async rental(@Body() vo: RequestRental): Promise<any> {
         try {
-            const result: any = this.rentalService.create(Builder(RentalDto).price(vo.price)
-                                                                            .borrower(vo.borrower)
-                                                                            .tel(vo.tel)
-                                                                            .userId(vo.userId)
-                                                                            .date(vo.date)
-                                                                            .time(vo.time)
-                                                                            .mapId(vo.mapId)
-                                                                            .mapName(vo.mapName)
-                                                                            .build());
+            const result: any = await this.rentalService.create(Builder(RentalDto).price(vo.price)
+                                                                                  .borrower(vo.borrower)
+                                                                                  .tel(vo.tel)
+                                                                                  .userId(vo.userId)
+                                                                                  .date(vo.date)
+                                                                                  .time(vo.time)
+                                                                                  .mapId(vo.mapId)
+                                                                                  .mapName(vo.mapName)
+                                                                                  .build());
 
             if(result.status === statusConstants.ERROR) {
-                return Object.assign({
+                return await Object.assign({
                     statusCode: HttpStatus.INTERNAL_SERVER_ERROR,
                     payload: null,
                     message: result.message
                 });
             }
 
-            return Object.assign({
-                statusCode: HttpStatus.OK,
+            // console.log(result);
+
+            return await Object.assign({
+                statusCode: HttpStatus.CREATED,
                 payload: Builder(ResponseRental).rentalId(result.payload.rentalId)
                                                 .price(result.payload.price)
                                                 .borrower(result.payload.borrower)
@@ -47,11 +49,11 @@ export class AppController {
                                                 .build(),
                 message: "Successfully rental"
             });
-        } catch(e) {
-            return Object.assign({
+        } catch(err) {
+            return await Object.assign({
                 statusCode: HttpStatus.BAD_REQUEST,
                 payload: null,
-                message: e
+                message: "Error message: " + err
             });
         }
     } 
@@ -127,9 +129,9 @@ export class AppController {
     }
 
     @Patch(':rentalId/rental')
-    public async deleteRental(@Param('rentalId') rentalId: string) {
+    public async expiredRental(@Param('rentalId') rentalId: string) {
         try {
-            const result: any = await this.rentalService.deleteRental(rentalId);
+            const result: any = await this.rentalService.expiredRental(rentalId);
 
             if(result.status === statusConstants.ERROR) {
                 return await Object.assign({
@@ -155,6 +157,48 @@ export class AppController {
 
     @EventPattern('PAYMENT_RESPONSE')
     public async responsePayment(data: any): Promise<any> {
-        console.log(data);
+        try {
+            if(data === 'FAILURE_PAYMENT') {
+                const result: any = await this.rentalService.deleteRental(Builder(RentalDto).rentalId(data.rentalId)
+                                                                                            .build());
+
+                if(result.status === statusConstants.ERROR) {
+                    return await Object.assign({
+                        status: HttpStatus.INTERNAL_SERVER_ERROR,
+                        payload: null,
+                        message: "Error message: " + result.message
+                    });
+                }
+
+                return await Object.assign({
+                    status: HttpStatus.INTERNAL_SERVER_ERROR,
+                    payload: null,
+                    message: "Error message: " + data
+                });
+            }
+
+            const result: any = await this.rentalService.completeRental(Builder(RentalDto).rentalId(data.rentalId)
+                                                                                          .build());
+
+            if(result.status === statusConstants.ERROR) {
+                return await Object.assign({
+                    status: HttpStatus.INTERNAL_SERVER_ERROR,
+                    payload: null,
+                    message: "Error message: " + result.message
+                });
+            }
+
+            return await Object.assign({
+               status: HttpStatus.OK,
+               payload: null,
+               message: "Successful complete rental!" 
+            });
+        } catch(err) {
+            return await Object.assign({
+                status: HttpStatus.INTERNAL_SERVER_ERROR,
+                payload: null,
+                message: "Error message: " + err
+            });
+        }
     }
 }
