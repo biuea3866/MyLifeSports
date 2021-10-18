@@ -4,7 +4,6 @@ import { View, TouchableOpacity, Text, StyleSheet } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import { changeField, initialize, makeRental } from '../../../modules/rental';
 import palette from '../../../styles/palette';
-import user from '../../../modules/user';
 
 const DetailFooter = ({ setError }) => {
     const dispatch = useDispatch();
@@ -97,7 +96,11 @@ const DetailFooter = ({ setError }) => {
 
     useEffect(() => {
         if(rental) {
-            navigation.navigate("Payment");
+            dispatch(initialize());
+
+            navigation.navigate("Payment", {
+                rentalId: rental.rentalId
+            });
         }
 
         if(rentalError) {
@@ -105,7 +108,7 @@ const DetailFooter = ({ setError }) => {
 
             navigation.goBack();
         }
-    }, [dispatch, rental]);
+    }, [dispatch, rental, navigation]);
 
     return(
         <View style={ styles.container }>

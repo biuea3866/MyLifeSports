@@ -1,11 +1,11 @@
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
-import PaymentContent from './components/PaymentFragment';
+import PaymentFragment from './components/PaymentFragment';
 
 const PaymentScreen = () => {
     return(
         <View style={ styles.container }>
-            <PaymentContent />
+            <PaymentFragment />
         </View>
     );
 };

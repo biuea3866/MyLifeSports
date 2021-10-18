@@ -19,3 +19,7 @@ export const rental = ({
     mapId,
     mapName
 });
+
+export const getRental = rentalId => client.get(`http://10.0.2.2:8000/rental-service/${rentalId}/rental`);
+
+export const getRentals = userId => client.get(`http://10.0.2.2:8000/rental-service/${userId}/rentals`);
