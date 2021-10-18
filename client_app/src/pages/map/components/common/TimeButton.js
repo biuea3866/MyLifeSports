@@ -1,11 +1,17 @@
 import React from 'react';
 import { StyleSheet, Text } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
+import { changeField } from '../../../../modules/rental';
+import { useDispatch } from 'react-redux';
 import palette from '../../../../styles/palette';
 
 const TimeButton = ({ time }) => {
-    const onSetTime = {
-        // rental redux module
+    const dispatch = useDispatch();
+    const onSetTime = () => {
+        dispatch(changeField({
+            key: 'time',
+            value: time
+        }));
     };
 
     return <TouchableOpacity style={ styles.shape }
@@ -19,7 +25,7 @@ const TimeButton = ({ time }) => {
 
 const styles = StyleSheet.create({
     shape: {
-        width: '20%',
+        width: 75,
         height: 40,
         backgroundColor: palette.blue[4],
         alignItems: 'center',

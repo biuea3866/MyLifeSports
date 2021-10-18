@@ -3,6 +3,7 @@ import React from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
 import MapScreen from '../../pages/map/MapScreen';
 import DetailScreen from '../../pages/map/DetailScreen';
+import PaymentScreen from '../../pages/payment/PaymentScreen';
 
 const Stack = createStackNavigator();
 
@@ -18,18 +19,9 @@ const MapStackNavigation = () => {
             <Stack.Screen name="Detail"
                           component={ DetailScreen }
             />
-            {/* <Stack.Screen 
-                name="Rental"
-                children={
-                    () => <RentalScreen />
-                }
+            <Stack.Screen name="Payment"
+                          component={ PaymentScreen }
             />
-            <Stack.Screen
-                name="Payment"
-                children={
-                    () => <PaymentScreen />
-                }
-            /> */}
         </Stack.Navigator>
     );
 };

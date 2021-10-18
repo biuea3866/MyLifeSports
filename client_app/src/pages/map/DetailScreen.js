@@ -1,15 +1,20 @@
-import * as React from 'react';
-import { View, StyleSheet } from 'react-native';
+import React, { useState } from 'react';
+import { ScrollView, StyleSheet } from 'react-native';
+import DetailFooter from './components/DetailFooter';
 import DetailHeader from './components/DetailHeader';
+import DetailContent from './components/DetailContent';
 import DetailNav from './components/DetailNav';
 
 const DetailScreen = () => {
+    const [error, setError] = useState('');
+
     return(
-        <View style={ styles.container }>
+        <ScrollView style={ styles.container }>
             <DetailHeader />
-            <DetailNav />
-            
-        </View>
+            <DetailNav error={ error }/>
+            <DetailContent />
+            <DetailFooter setError={ setError }/>
+        </ScrollView>
     );
 };
 

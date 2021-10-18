@@ -1,6 +1,7 @@
 import React from 'react';
-import { Text, View } from 'react-native';
+import { Text, View, StyleSheet } from 'react-native';
 import { useSelector } from 'react-redux';
+import palette from '../../../styles/palette';
 import NavIcon from './common/NavIcon';
 
 const DetailNav = () => {
@@ -36,10 +37,10 @@ const DetailNav = () => {
                 <NavIcon name={ "ios-person" } />
                 {
                     map.edu_yn === '유' ?
-                    <Text style={ styles.icon } >
+                    <Text style={ styles.text } >
                         교육 가능
                     </Text> :
-                    <Text style={ styles.icon } >
+                    <Text style={ styles.text } >
                         교육 불가
                     </Text>
                 }

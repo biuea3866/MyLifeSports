@@ -7,14 +7,15 @@ const StyledTextInput = ({
     placeholder,
     placeholderTextColor,
     onChange,
+    value
 }) => {
     return(
-        <TextInput
-            style={ styles.input }
-            placeholder={ placeholder }
-            placeholderTextColor={ placeholderTextColor }
-            inputAccessoryViewID={ inputAccessoryViewID }
-            onChange={ onChange }
+        <TextInput style={ styles.input }
+                   placeholder={ placeholder }
+                   placeholderTextColor={ placeholderTextColor }
+                   inputAccessoryViewID={ inputAccessoryViewID }
+                   onChange={ onChange }
+                   value={ value }
         />
     );
 };

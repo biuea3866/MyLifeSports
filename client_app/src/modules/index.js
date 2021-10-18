@@ -6,6 +6,7 @@ import user, { userSaga } from "./user";
 import marker from './marker';
 import map from "./map";
 import maps, { mapsSaga } from "./maps";
+import rental, { rentalSaga } from './rental';
 
 const rootReducer = combineReducers({
     auth,
@@ -13,7 +14,8 @@ const rootReducer = combineReducers({
     user,
     marker,
     map,
-    maps
+    maps,
+    rental
 });
 
 export function* rootSaga() {
@@ -21,6 +23,7 @@ export function* rootSaga() {
         authSaga(),
         userSaga(),
         mapsSaga(),
+        rentalSaga(),
     ]);
 };
 

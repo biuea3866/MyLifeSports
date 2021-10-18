@@ -33,7 +33,7 @@ const styles = StyleSheet.create({
     content: {
         flexDirection: 'row',
         height: 100
-    }
+    },
 });
 
 export default CustomTimePicker;
