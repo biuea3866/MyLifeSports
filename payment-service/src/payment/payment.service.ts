@@ -91,4 +91,68 @@ export class PaymentService {
             });
         }
     }
+
+    public async getPayments(payer: string): Promise<any> {
+        try {
+            const entities: any = this.paymentModel.find({ payer: payer });
+
+            if(!entities) {
+                return await Object.assign({
+                    status: statusConstants.ERROR,
+                    payload: null,
+                    message: "Not exist payment datas"
+                });
+            }
+
+            const dtos: Array<PaymentDto> = [];
+
+            for(const entity of entities) {
+                dtos.push(entity);
+            }
+
+            return await Object.assign({
+                status: statusConstants.SUCCESS,
+                payload: dtos,
+                message: "Successful transaction"
+            });
+        } catch(err) {
+            return await Object.assign({
+                status: statusConstants.ERROR,
+                payload: null,
+                message: err
+            });
+        }
+    }
+    
+    public async getPaymentFromRental(data: any) {
+        try {
+            const entity: any = await this.paymentModel.findOne({ rentalId: data });
+
+            if(!entity) {
+                return await Object.assign({
+                    status: statusConstants.SUCCESS,
+                    payload: null,
+                    message: "Not exist data"
+                });
+            }
+
+            return await Object.assign({
+                status: statusConstants.SUCCESS,
+                payload: Builder(PaymentDto).paymentId(entity.paymentId)
+                                            .paymentName(entity.paymentName)
+                                            .payer(entity.payer)
+                                            .price(entity.price)
+                                            .rentalId(entity.rentalId)
+                                            .createdAt(entity.createdAt)
+                                            .build(),
+                message: "Successful transaction"
+            });
+        } catch(err) {
+            return await Object.assign({
+                status: statusConstants.ERROR,
+                payload: null,
+                message: err
+            });
+        }
+    }
 }

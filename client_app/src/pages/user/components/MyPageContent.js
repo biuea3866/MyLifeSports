@@ -21,9 +21,7 @@ const MyPageContent = () => {
     const onPressToMyRental = e => {
         e.preventDefault();
         
-        navigation.navigate("MyRental", {
-            name: 'MyRental'
-        });
+        navigation.navigate("MyRental");
     };
 
     const onPressToMyPost = e => {

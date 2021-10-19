@@ -32,8 +32,6 @@ export class AppController {
                 });
             }
 
-            // console.log(result);
-
             return await Object.assign({
                 statusCode: HttpStatus.CREATED,
                 payload: Builder(ResponseRental).rentalId(result.payload.rentalId)
@@ -100,7 +98,7 @@ export class AppController {
         try {
             const result: any = await this.rentalService.getRentals(userId);
             
-            if(result.status !== statusConstants.ERROR) {
+            if(result.status === statusConstants.ERROR) {
                 return await Object.assign({
                     statusCode: HttpStatus.INTERNAL_SERVER_ERROR,
                     payload: null,

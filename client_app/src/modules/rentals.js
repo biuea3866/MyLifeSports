@@ -3,6 +3,8 @@ import createRequestSaga, { createRequestActionTypes } from "../lib/createReques
 import * as rentalAPI from '../lib/api/rental';
 import { takeLatest } from "@redux-saga/core/effects";
 
+const INITIALIZE = 'rental/INITIALIZE';
+
 const [
     GET_RENTAL,
     GET_RENTAL_SUCCESS,
@@ -36,6 +38,7 @@ const initialState = {
 
 const rentals = handleActions(
     {
+        [INITIALIZE]: (state => initialState),
         [GET_RENTAL_SUCCESS]: (state, { payload: rental }) => ({
             ...state,
             rental

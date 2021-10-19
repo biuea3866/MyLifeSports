@@ -5,11 +5,12 @@ import {
     Text
 } from 'react-native';
 import palette from '../../styles/palette';
+import MyRentalFramgment from './components/MyRentalFramgent';
 
 const MyRentalScreen = () => {
     return(
         <View style={ styles.container }>
-            <Text>MyRentalScreen</Text>
+            <MyRentalFramgment />
         </View>
     );
 };

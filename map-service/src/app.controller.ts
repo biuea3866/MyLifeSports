@@ -95,8 +95,6 @@ export class AppController {
     @Get('maps/list-gu-nm/:gu_nm')
     public async getListByGuNm(@Param('gu_nm') gu_nm: string) : Promise<any> {
         try {
-            console.log(gu_nm);
-
             const result: any = await this.mapsService.getListByGuNm(gu_nm);
 
             if(result.status !== HttpStatus.OK) {

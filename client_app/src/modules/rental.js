@@ -58,7 +58,7 @@ const initialState = {
     mapName: '',
     rental: null,
     rentalError: null
-};
+};  
 
 const rental = handleActions(
     {

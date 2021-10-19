@@ -8,6 +8,7 @@ import map from "./map";
 import maps, { mapsSaga } from "./maps";
 import rental, { rentalSaga } from './rental';
 import payment, { paymentSaga } from './payment';
+import payments, { paymentsSaga } from "./payments";
 import rentals, { rentalsSaga } from "./rentals";
 
 const rootReducer = combineReducers({
@@ -19,7 +20,8 @@ const rootReducer = combineReducers({
     maps,
     rental,
     rentals,
-    payment
+    payment,
+    payments,
 });
 
 export function* rootSaga() {
@@ -30,6 +32,7 @@ export function* rootSaga() {
         rentalSaga(),
         rentalsSaga(),
         paymentSaga(),
+        paymentsSaga()
     ]);
 };
 

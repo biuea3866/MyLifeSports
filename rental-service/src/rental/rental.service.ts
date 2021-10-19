@@ -8,13 +8,16 @@ import { Builder } from 'builder-pattern';
 import { v4 as uuid } from 'uuid';
 import { ResponseRental } from 'src/vo/response.rental';
 import { status } from 'src/constants/rental.status';
-import { ClientProxy } from '@nestjs/microservices';
+import { HttpService } from '@nestjs/axios';
+import { map, Observable } from 'rxjs';
+import { AxiosResponse } from 'axios';
+import { response } from 'express';
 
 @Injectable()
 export class RentalService {
     constructor(
-        @InjectModel(Rental.name) private rentalModel: Model<RentalDocument>,    
-        @Inject('payment-service') private readonly client: ClientProxy
+        @InjectModel(Rental.name) private rentalModel: Model<RentalDocument>,
+        private httpService: HttpService    
     ) {}
 
     public async create(dto: RentalDto): Promise<any> {
@@ -33,8 +36,6 @@ export class RentalService {
                                                                           .build())
                                                                           .save();
 
-            console.log(entity);
-
             if(!entity) {
                 return await Object.assign({
                     status: statusConstants.ERROR,
@@ -43,18 +44,6 @@ export class RentalService {
                 });
             }
 
-            console.log(Builder(RentalDto).rentalId(entity.rentalId)
-            .price(entity.price)
-            .borrower(entity.borrower)
-            .tel(entity.tel)
-            .userId(entity.userId)
-            .date(entity.date)
-            .time(entity.time)
-            .mapId(entity.mapId)
-            .mapName(entity.mapName)
-            .status(entity.status)
-            .createdAt(entity.createdAt)
-            .build())
             return await Object.assign({
                 status: statusConstants.SUCCESS,
                 payload: Builder(RentalDto).rentalId(entity.rentalId)
@@ -120,7 +109,7 @@ export class RentalService {
     public async getRentals(userId: string): Promise<any> {
         try {
             const result: any = await this.rentalModel.find({ userId: userId });
-        
+
             if(!result) {
                 return await Object.assign({
                     statusCode: statusConstants.ERROR,
@@ -128,11 +117,28 @@ export class RentalService {
                     message: "Not rental datas"
                 });
             }
-
+            
             const dtoRentals: Array<ResponseRental> = [];
 
             for(const el of result) {
-                dtoRentals.push(el);
+                const payment = await this.httpService.get(`http://localhost:8000/payment-service/${el.rentalId}/payment-from-rental`)
+                                                      .toPromise();
+                
+                const dto = Builder(RentalDto).rentalId(el.rentalId)
+                                              .price(el.price)
+                                              .borrower(el.borrower)
+                                              .tel(el.tel)
+                                              .userId(el.userId)
+                                              .date(el.date)
+                                              .time(el.time)
+                                              .mapId(el.mapId)
+                                              .mapName(el.mapName)
+                                              .status(el.status)
+                                              .createdAt(el.createdAt)
+                                              .payment(payment.data.payload)
+                                              .build();
+                
+                dtoRentals.push(dto);
             }
 
             return await Object.assign({

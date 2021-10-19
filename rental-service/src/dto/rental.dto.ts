@@ -1,4 +1,4 @@
-import { IsNumber, IsString } from "class-validator";
+import { IsJSON, IsNumber, IsObject, IsString } from "class-validator";
 
 export class RentalDto {
     @IsString()
@@ -33,4 +33,7 @@ export class RentalDto {
     
     @IsString()
     createdAt: string;
+
+    @IsJSON()
+    payment: any;
 }

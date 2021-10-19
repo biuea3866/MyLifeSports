@@ -12,6 +12,6 @@ export const requestPayment = ({
     price
 });
 
-export const getPayements = borrower => client.get(`http://10.0.2.2:8000/payment-service/${borrower}/payments`);
+export const getPayements = payer => client.get(`http://10.0.2.2:8000/payment-service/${payer}/payments`);
 
-export const getPayment = paymentId => client.get(`http://10.0.2.2:8000/${paymentId}/payment`);
+export const getPayment = paymentId => client.get(`http://10.0.2.2:8000/payment-service/${paymentId}/payment`);
