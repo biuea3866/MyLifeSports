@@ -15,7 +15,7 @@ const MyRentalFramgment = () => {
         user,
         rentals
     }) => ({
-        user: user.user, 
+        userId: user.user.userId, 
         rentals: rentals.rentals 
     }));
     

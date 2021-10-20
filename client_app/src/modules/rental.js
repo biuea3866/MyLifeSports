@@ -11,6 +11,12 @@ const [
     MAKE_RENTAL_FAILURE,
 ] = createRequestActionTypes('rental/MAKE_RENTAL');
 
+const [
+    DELETE_RENTAL,
+    DELETE_RENTAL_SUCCESS,
+    DELETE_RENTAL_FAILURE
+] = createRequestActionTypes('rental/DELETE_RENTAL');
+
 export const changeField = createAction(CHANGE_FIELD, ({
     key,
     value
@@ -41,10 +47,14 @@ export const makeRental = createAction(MAKE_RENTAL, ({
     mapName
 }));
 
+export const deleteRental = createAction(DELETE_RENTAL, rentalId => rentalId);
+
 const makeRentalSaga = createRequestSaga(MAKE_RENTAL, rentalAPI.rental);
+const deleteRentalSaga = createRequestSaga(DELETE_RENTAL, rentalAPI.deleteRental);
 
 export function* rentalSaga() {
     yield takeLatest(MAKE_RENTAL, makeRentalSaga);
+    yield takeLatest(DELETE_RENTAL, deleteRentalSaga);
 }
 
 const initialState = {
@@ -57,7 +67,8 @@ const initialState = {
     mapId: '',
     mapName: '',
     rental: null,
-    rentalError: null
+    rentalError: null,
+    message: null,
 };  
 
 const rental = handleActions(
@@ -74,7 +85,15 @@ const rental = handleActions(
         [MAKE_RENTAL_FAILURE]: (state, { payload: rentalError }) => ({
             ...state,
             rentalError
-        })
+        }),
+        [DELETE_RENTAL_SUCCESS]: (state, { payload: message }) => ({
+            ...state,
+            message,
+        }),
+        [DELETE_RENTAL_FAILURE]: (state, { payload: rentalError }) => ({
+            ...state,
+            rentalError,
+        }),
     },
     initialState,
 );

@@ -17,6 +17,8 @@ const [
     GET_RENTALS_FAILURE
 ] = createRequestActionTypes('rental/GET_RENTALS');
 
+export const initialize = createAction(INITIALIZE);
+
 export const getRental = createAction(GET_RENTAL, rentalId => rentalId);
 
 export const getRentals = createAction(GET_RENTALS, userId => userId);

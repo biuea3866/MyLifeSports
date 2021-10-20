@@ -1,4 +1,4 @@
-import { Inject, Injectable } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { statusConstants } from 'src/constants/status.constant';
@@ -9,9 +9,6 @@ import { v4 as uuid } from 'uuid';
 import { ResponseRental } from 'src/vo/response.rental';
 import { status } from 'src/constants/rental.status';
 import { HttpService } from '@nestjs/axios';
-import { map, Observable } from 'rxjs';
-import { AxiosResponse } from 'axios';
-import { response } from 'express';
 
 @Injectable()
 export class RentalService {
@@ -71,7 +68,7 @@ export class RentalService {
 
     public async getOne(rentalId: string): Promise<any> {
         try {
-            const result: any = await this.rentalModel.find({ rentalId: rentalId });
+            const result: any = await this.rentalModel.findOne({ rentalId: rentalId });
 
             if(!result) {
                 return await Object.assign({
@@ -181,9 +178,9 @@ export class RentalService {
         }
     }
 
-    public async deleteRental(dto: RentalDto): Promise<any> {
+    public async deleteRental(rentalId: string): Promise<any> {
         try {
-            const result  = await this.rentalModel.deleteOne({ rentalId: dto.rentalId });
+            const result  = await this.rentalModel.deleteOne({ rentalId: rentalId });
             
             if(!result) {
                 return await Object.assign({

@@ -5,38 +5,30 @@ import MyPageScreen from '../../pages/user/MyPageScreen';
 import MyRentalScreen from '../../pages/user/MyRentalScreen';
 import MyPostScreen from '../../pages/user/MyPostScreen';
 import InformationScreen from '../../pages/user/InformationScreen';
+import PaymentScreen from '../../pages/payment/PaymentScreen';
 
 const Stack = createStackNavigator();
 
 const MyPageStackNavigation = () => {
     return(
         <Stack.Navigator>
-            <Stack.Screen
-                name="MyPage"
-                children={
-                    () => <MyPageScreen />
-                }
-                options={{
-                    headerShown: false
-                }}
+            <Stack.Screen name="MyPage"
+                          component={ MyPageScreen }
+                          options={{
+                              headerShown: false
+                          }}
             />
-            <Stack.Screen 
-                name="MyRental"
-                children={
-                    () => <MyRentalScreen />
-                }
+            <Stack.Screen name="MyRental"
+                          component={ MyRentalScreen }
             />
-            <Stack.Screen 
-                name="Information"
-                children={
-                    () => <InformationScreen />
-                }
+            <Stack.Screen name="Information"
+                          component={ InformationScreen }
             />
-            <Stack.Screen 
-                name="MyPost"
-                children={
-                    () => <MyPostScreen />
-                }
+            <Stack.Screen name="MyPost"
+                          component={ MyPostScreen }
+            />
+            <Stack.Screen name="Payment"
+                          component={ PaymentScreen }
             />
         </Stack.Navigator>
     );

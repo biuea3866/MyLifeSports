@@ -25,7 +25,7 @@ export const getPayments = createAction(GET_PAYMENTS, payer => payer);
 
 const getPaymentSaga = createRequestSaga(GET_PAYMENT, paymentAPI.getPayment);
 
-const getPaymentsSaga = createRequestSaga(GET_PAYMENTS, paymentAPI.getPayements);
+const getPaymentsSaga = createRequestSaga(GET_PAYMENTS, paymentAPI.getPayments);
 
 export function* paymentsSaga() {
     yield takeLatest(GET_PAYMENT, getPaymentSaga);

@@ -119,8 +119,6 @@ export class AppController {
         try {
             const result: any = await this.paymentService.getPaymentFromRental(rentalId);
 
-            console.log(result);
-
             if(result.status === statusConstants.ERROR) {
                 return await Object.assign({
                     status: HttpStatus.INTERNAL_SERVER_ERROR,

@@ -153,12 +153,38 @@ export class AppController {
         }
     }
 
+    @Delete(':rentalId/rental')
+    public async deleteRental(@Param('rentalId') rentalId: string): Promise<any> {
+        try {
+            const result: any = this.rentalService.deleteRental(rentalId);
+
+            if(result.status === statusConstants.ERROR) {
+                return await Object.assign({
+                    status: HttpStatus.INTERNAL_SERVER_ERROR,
+                    payload: null,
+                    message: "Error message: " + result.message
+                });
+            }
+
+            return await Object.assign({
+                status: HttpStatus.OK,
+                payload: null,
+                message: "Successful delete one"
+            });
+        } catch(err) {
+            return await Object.assign({
+                status: HttpStatus.BAD_REQUEST,
+                payload: null,
+                message: "Error message: " + err
+            });
+        }
+    }
+
     @EventPattern('PAYMENT_RESPONSE')
     public async responsePayment(data: any): Promise<any> {
         try {
             if(data === 'FAILURE_PAYMENT') {
-                const result: any = await this.rentalService.deleteRental(Builder(RentalDto).rentalId(data.rentalId)
-                                                                                            .build());
+                const result: any = await this.rentalService.deleteRental(data.rentalId);
 
                 if(result.status === statusConstants.ERROR) {
                     return await Object.assign({

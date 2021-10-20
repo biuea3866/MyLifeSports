@@ -1,5 +1,6 @@
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
+import PaymentButton from '../components/PaymentButton';
 import palette from '../../../styles/palette';
 
 const MyRenalCard = ({ item }) => {
@@ -11,6 +12,10 @@ const MyRenalCard = ({ item }) => {
             <Text style={ styles.font }>
                 { item.mapName }
             </Text>
+            {
+                !item.payment &&
+                <PaymentButton rentalId={ item.rentalId }/>
+            }
         </View>
     );
 };
@@ -20,12 +25,12 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
         width: 350,
-        height: 50,
         marginLeft: 30,
         marginTop: 15,
         marginBottom: 5,
-        borderRadius: 30,
-        backgroundColor: palette.gray[3]
+        paddingTop: 10,
+        paddingBottom: 10,
+        backgroundColor: palette.white[0]
     },
     font: {
         fontWeight: 'bold',
