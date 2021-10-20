@@ -10,7 +10,7 @@ const PaymentButton = rentalId => {
     const navigation = useNavigation();
     const toPaymentPage = e => {
         navigation.navigate("Payment", {
-            rentalId: rentalId
+            rentalId: rentalId.rentalId
         });
     };
     const onCancel = e => {

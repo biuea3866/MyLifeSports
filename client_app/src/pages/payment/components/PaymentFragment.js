@@ -13,9 +13,7 @@ const PaymentFragment = () => {
     const { rental } = useSelector(({ rentals }) => ({ rental: rentals.rental }));
 
     useEffect(() => {
-        const { rentalId } = route.params.rentalId;
-
-        dispatch(getRental(rentalId));
+        dispatch(getRental(route.params.rentalId));
     }, [dispatch, route]);
 
     return(
