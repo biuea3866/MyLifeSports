@@ -1,4 +1,4 @@
-import { Controller, Delete, Get, HttpStatus, Param, Post } from "@nestjs/common";
+import { Body, Controller, Delete, Get, HttpStatus, Param, Post } from "@nestjs/common";
 import { Builder } from "builder-pattern";
 import { statusConstants } from "./constants/status.constants";
 import { PostDto } from "./dto/post.dto";
@@ -11,14 +11,14 @@ export class AppController {
     constructor(private readonly postService: PostService) {}
 
     @Post('/')
-    public async write(vo: RequestPost): Promise<any> {
+    public async write(@Body() vo: RequestPost): Promise<any> {
         try {
             const dto: any = this.postService.write(Builder(PostDto).type(vo.type)
                                                                     .title(vo.title)
                                                                     .content(vo.content)
                                                                     .userId(vo.userId)
                                                                     .writer(vo.writer)
-                                                                    .rental(vo.rental)
+                                                                    .rental(vo.rental ? vo.rental : null)
                                                                     .build());
 
             if(dto.status === statusConstants.ERROR) {
