@@ -55,6 +55,7 @@ export class PostService {
         try {
             const entities: any = await this.postModel.find();
 
+            console.log(entities);
             if(!entities) {
                 return await Object.assign({
                     status: statusConstants.SUCCESS,

@@ -21,7 +21,6 @@ export class AppController {
                                                                           .rental(vo.rental ? vo.rental : null)
                                                                           .build());
 
-            console.log("1" + dto);
 
             if(dto.status === statusConstants.ERROR) {
                 return await Object.assign({
@@ -67,8 +66,8 @@ export class AppController {
 
             const responsePosts: Array<ResponsePost> = [];
 
-            for(const post of dtos) {
-                responsePosts.push(post);
+            for(const dto of dtos.payload) {
+                responsePosts.push(dto);
             }
 
             return await Object.assign({
@@ -100,8 +99,8 @@ export class AppController {
 
             const responsePosts: Array<ResponsePost> = [];
 
-            for(const post of dtos) {
-                responsePosts.push(post);
+            for(const dto of dtos.payload) {
+                responsePosts.push(dto);
             }
 
             return await Object.assign({
@@ -168,8 +167,8 @@ export class AppController {
 
             const responsePosts: Array<ResponsePost> = [];
 
-            for(const post of dtos) {
-                responsePosts.push(post);
+            for(const dto of dtos.payload) {
+                responsePosts.push(dto);
             }
 
             return await Object.assign({
@@ -201,8 +200,8 @@ export class AppController {
 
             const responsePosts: Array<ResponsePost> = [];
 
-            for(const post of dtos) {
-                responsePosts.push(post);
+            for(const dto of dtos.payload) {
+                responsePosts.push(dto);
             }
 
             return await Object.assign({

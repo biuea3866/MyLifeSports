@@ -18,10 +18,9 @@ const PostHeader = () => {
             <View style={ styles.searchBox }>
                 <TextInput style={ styles.input } />
                 <TouchableOpacity onPress={ onPress }>
-                    <Icon
-                        name={ 'ios-search-outline' }
-                        size={ 19 }
-                        color={ palette.white[0] }
+                    <Icon name={ 'ios-search-outline' }
+                          size={ 19 }
+                          color={ palette.white[0] }
                     />
                 </TouchableOpacity>
             </View>

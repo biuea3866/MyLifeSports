@@ -1,7 +1,7 @@
 import client from './client';
 import qs from 'qs';
 
-export const getOne = id => client.get(`http://10.0.2.2:8000/map-service/map/${id}`);
+export const getOne = _id => client.get(`http://10.0.2.2:8000/map-service/map/${_id}`);
 
 export const getAll = () => client.get('http://10.0.2.2:8000/map-service/');
 

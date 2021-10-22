@@ -20,9 +20,8 @@ const PostNav = () => {
 
     return(
         <View style={ styles.container }>
-            <TouchableOpacity
-                style={ styles.writeButton }
-                onPress={ onPress }
+            <TouchableOpacity style={ styles.writeButton }
+                              onPress={ onPress }
             >
                 <Text style={ styles.text }>
                     글쓰기

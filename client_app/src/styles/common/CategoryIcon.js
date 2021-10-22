@@ -15,10 +15,9 @@ const CategoryIcon = ({
     return(
         <View style={ styles.container }>
             <TouchableOpacity>
-                <Icon 
-                    size={ 48 }
-                    name={ name }
-                    color={ palette.blue[4] }
+                <Icon size={ 48 }
+                      name={ name }
+                      color={ palette.blue[4] }
                 />
             </TouchableOpacity>
             <Text style={ styles.font }>

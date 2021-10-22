@@ -35,6 +35,7 @@ const [
     LIST_POSTS_KEYWORD_FAILURE
 ] = createRequestActionTypes('posts/LIST_POSTS_KEYWORD');
 
+export const initialize = createAction(INITIALIZE);
 export const readPost = createAction(READ_POST, _id => _id);
 
 export const listAll = createAction(LIST_ALL);
@@ -72,9 +73,9 @@ const initialState = {
 const posts = handleActions(
     {
         [INITIALIZE]: state => initialState,
-        [READ_POST_SUCCESS]: (state, { payload: posts }) => ({
+        [READ_POST_SUCCESS]: (state, { payload: post }) => ({
             ...state,
-            posts,
+            post,
         }),
         [READ_POST_FAILURE]: (state, { payload: postsError }) => ({
             ...state,

@@ -18,7 +18,7 @@ const PostScreen = () => {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: palette.white[0],
+        backgroundColor: palette.gray[2],
     },
 });
 

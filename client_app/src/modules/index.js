@@ -4,7 +4,7 @@ import auth, { authSaga } from './auth';
 import loading from "./loading";
 import user, { userSaga } from "./user";
 import marker from './marker';
-import map from "./map";
+import map, { mapSaga } from "./map";
 import maps, { mapsSaga } from "./maps";
 import rental, { rentalSaga } from './rental';
 import payment, { paymentSaga } from './payment';
@@ -32,6 +32,7 @@ export function* rootSaga() {
     yield all([
         authSaga(),
         userSaga(),
+        mapSaga(),
         mapsSaga(),
         rentalSaga(),
         rentalsSaga(),
