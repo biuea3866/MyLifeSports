@@ -1,9 +1,23 @@
 import React from 'react';
 import { StyleSheet, Text, TextInput, View } from 'react-native';
+import { useDispatch, useSelector } from 'react-redux';
+import { changeField } from '../../../modules/post';
 import palette from '../../../styles/palette';
 import RentalList from './RentalList';
 
 const WriteContent = () => {
+    const dispatch = useDispatch();
+    const { type } = useSelector(({ post }) => ({ type: post.type }));
+    const onChange = e => {
+        const inputAccessoryViewID = e.target._internalFiberInstanceHandleDEV.memoizedProps.inputAccessoryViewID;
+        const value = e.nativeEvent.text;
+
+        dispatch(changeField({
+            key: inputAccessoryViewID,
+            value,
+        }));
+    };
+
     return(
         <View>
             <View style={ styles.container }>
@@ -12,7 +26,10 @@ const WriteContent = () => {
                         제목을 적어주세요
                     </Text>
                 </View>
-                <TextInput style={ styles.title_input }/>
+                <TextInput style={ styles.title_input }
+                           inputAccessoryViewID="title"
+                           onChange={ onChange }
+                />
             </View>
             <View style={ styles.container }>
                 <View style={ styles.label }>
@@ -21,18 +38,23 @@ const WriteContent = () => {
                     </Text>
                 </View>
                 <TextInput style={ styles.content_input }
+                           inputAccessoryViewID="content"
                            multiline={ true }
                            textAlignVertical="top"
+                           onChange={ onChange }
                 />
             </View>
-            <View style={ styles.container }>
-                <View style={ styles.label }>
-                    <Text style={ styles.font }>
-                        대관 내역이에요
-                    </Text>
+            {  
+                type === '함께해요' &&
+                <View style={ styles.container }>
+                    <View style={ styles.label }>
+                        <Text style={ styles.font }>
+                            대관 내역이에요
+                        </Text>
+                    </View>
+                    <RentalList />
                 </View>
-                <RentalList />
-            </View>
+            }
         </View>
     );
 };

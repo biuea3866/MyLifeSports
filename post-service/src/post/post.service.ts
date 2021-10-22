@@ -12,14 +12,15 @@ export class PostService {
 
     public async write(dto: PostDto): Promise<any> {
         try {
-            const entity: any = await new this.postModel(Builder(Post).title(dto.title)
+            const entity: any = await new this.postModel(Builder(Post).type(dto.type)
+                                                                      .title(dto.title)
                                                                       .content(dto.content)
-                                                                      .type(dto.type)
                                                                       .userId(dto.userId)
                                                                       .writer(dto.writer)
                                                                       .createdAt(new Date().toString())
                                                                       .rental(dto.rental ? dto.rental : null)
-                                                                      .build());
+                                                                      .build())
+                                                                      .save();
 
             if(!entity) {
                 return await Object.assign({
@@ -31,8 +32,7 @@ export class PostService {
 
             return await Object.assign({
                 status: statusConstants.SUCCESS,
-                payload: Builder(PostDto)._id(String(entity._id))
-                                         .title(entity.title)
+                payload: Builder(PostDto).title(entity.title)
                                          .content(entity.content)
                                          .type(entity.type)
                                          .userId(entity.userId)

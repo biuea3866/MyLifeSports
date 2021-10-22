@@ -1,10 +1,11 @@
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
+import WriteButton from './WriteButton';
 
 const WriteFooter = () => {
     return(
         <View style={ styles.container }>
-            
+            <WriteButton />
         </View>
     );
 };
@@ -12,9 +13,8 @@ const WriteFooter = () => {
 const styles = StyleSheet.create({
     container: {
         width: 370,
-        justifyContent: 'flex-start',
-        marginLeft: 20,
-        marginTop: 40,
+        alignItems: 'flex-end',
+        margin: 20,
     },
 });
 

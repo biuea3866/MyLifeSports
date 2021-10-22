@@ -1,5 +1,4 @@
 import { Prop, Schema, SchemaFactory } from "@nestjs/mongoose";
-import { Transform } from "class-transformer";
 import { SchemaTypes, Types } from "mongoose";
 
 export type MapsDocument = Maps & Document;

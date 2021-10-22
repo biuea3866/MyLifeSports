@@ -30,7 +30,7 @@ const MyRentalFramgment = () => {
                 rentals.map((item, i) => {
                     return <MyRenalCard i={ i }
                                         item={ item }
-                            />
+                           />;
                 }) : <Loading />
             }
         </View>

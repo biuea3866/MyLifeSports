@@ -11,18 +11,14 @@ const PostStackNavigation = () => {
         <Stack.Navigator>
             <Stack.Screen 
                 name="Post"
-                children={
-                    () => <PostScreen />
-                }
+                component={ PostScreen }
                 options={{
                     headerShown: false,
                 }}
             />
             <Stack.Screen 
                 name="PostWrite"
-                children={
-                    () => <PostWriteScreen />
-                }
+                component={ PostWriteScreen }
             />
         </Stack.Navigator>
     );

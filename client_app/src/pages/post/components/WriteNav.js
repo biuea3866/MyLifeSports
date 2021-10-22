@@ -1,15 +1,20 @@
 import React from 'react';
+import { useDispatch } from 'react-redux';
 import { StyleSheet, Text, View } from 'react-native';
 import { SegmentedControls } from 'react-native-radio-buttons-ext';
-import palette from '../../../styles/palette';
+import { changeField } from '../../../modules/post';
 
 const WriteNav = () => {
+    const dispatch = useDispatch();
     const values = [
         '함께해요', 
         '도와주세요'
     ];
     const onSelect = e => {
-        console.log(e);
+        dispatch(changeField({
+            key: 'type',
+            value: e
+        }));
     };
 
     return(

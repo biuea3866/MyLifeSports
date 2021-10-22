@@ -13,13 +13,15 @@ export class AppController {
     @Post('/')
     public async write(@Body() vo: RequestPost): Promise<any> {
         try {
-            const dto: any = this.postService.write(Builder(PostDto).type(vo.type)
-                                                                    .title(vo.title)
-                                                                    .content(vo.content)
-                                                                    .userId(vo.userId)
-                                                                    .writer(vo.writer)
-                                                                    .rental(vo.rental ? vo.rental : null)
-                                                                    .build());
+            const dto: any = await this.postService.write(Builder(PostDto).type(vo.type)
+                                                                          .title(vo.title)
+                                                                          .content(vo.content)
+                                                                          .userId(vo.userId)
+                                                                          .writer(vo.writer)
+                                                                          .rental(vo.rental ? vo.rental : null)
+                                                                          .build());
+
+            console.log("1" + dto);
 
             if(dto.status === statusConstants.ERROR) {
                 return await Object.assign({
@@ -31,8 +33,7 @@ export class AppController {
 
             return await Object.assign({
                 status: HttpStatus.CREATED,
-                payload: Builder(ResponsePost)._id(dto.payload._id)
-                                              .type(dto.payload.type)
+                payload: Builder(ResponsePost).type(dto.payload.type)
                                               .title(dto.payload.title)
                                               .content(dto.payload.content)
                                               .userId(dto.payload.userId)
@@ -54,7 +55,7 @@ export class AppController {
     @Get('/')
     public async getAll(): Promise<any> {
         try {
-            const dtos: any = this.postService.getAll();
+            const dtos: any = await this.postService.getAll();
 
             if(dtos.status === statusConstants.ERROR) {
                 return await Object.assign({
@@ -87,7 +88,7 @@ export class AppController {
     @Get('posts/type/:type')
     public async getPostsByType(@Param('type') type: string): Promise<any> {
         try {
-            const dtos: any = this.postService.getPostsByType(type);
+            const dtos: any = await this.postService.getPostsByType(type);
 
             if(dtos.status === statusConstants.ERROR) {
                 return await Object.assign({
@@ -120,7 +121,7 @@ export class AppController {
     @Get(':_id/post')
     public async getOne(@Param('_id') _id: string): Promise<any> {
         try {
-            const dto: any = this.postService.getOne(_id);
+            const dto: any = await this.postService.getOne(_id);
 
             if(dto.status === statusConstants.ERROR) {
                 return await Object.assign({
@@ -155,7 +156,7 @@ export class AppController {
     @Get(':userId/posts')
     public async getPostsByUserId(@Param('userId') userId: string): Promise<any> {
         try {
-            const dtos: any = this.postService.getPostsByUserId(userId);
+            const dtos: any = await this.postService.getPostsByUserId(userId);
 
             if(dtos.status === statusConstants.ERROR) {
                 return await Object.assign({
@@ -188,7 +189,7 @@ export class AppController {
     @Get('posts/keyword/:keyword')
     public async getPostsByKeyword(@Param('keyword') keyword: string): Promise<any> {
         try {
-            const dtos: any = this.postService.getPostsByKeyword(keyword);
+            const dtos: any = await this.postService.getPostsByKeyword(keyword);
 
             if(dtos.status === statusConstants.ERROR) {
                 return await Object.assign({
@@ -221,7 +222,7 @@ export class AppController {
     @Delete(':_id/post')
     public async deletePost(@Param('_id') _id: string): Promise<any> {
         try {    
-            const result: any = this.postService.deletePost(_id);
+            const result: any = await this.postService.deletePost(_id);
 
             if(result.status === statusConstants.ERROR) {
                 return await Object.assign({

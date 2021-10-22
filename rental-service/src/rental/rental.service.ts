@@ -114,7 +114,7 @@ export class RentalService {
                     message: "Not rental datas"
                 });
             }
-            
+
             const dtoRentals: Array<ResponseRental> = [];
 
             for(const el of result) {
@@ -147,7 +147,7 @@ export class RentalService {
             return await Object.assign({
                 statusCode: statusConstants.ERROR,
                 payload: null,
-                message: "map-service database: " + err,
+                message: "rental-service database: " + err,
             });
         }
     }

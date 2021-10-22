@@ -97,7 +97,7 @@ export class AppController {
     public async getRentals(@Param('userId') userId: string) {
         try {
             const result: any = await this.rentalService.getRentals(userId);
-            
+
             if(result.status === statusConstants.ERROR) {
                 return await Object.assign({
                     statusCode: HttpStatus.INTERNAL_SERVER_ERROR,
