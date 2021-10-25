@@ -27,3 +27,17 @@ export const getPostsByUserId = userId => client.get(`http://10.0.2.2:8000/post-
 export const getPostsByKeyword = keyword => client.get(`http://10.0.2.2:8000/post-service/posts/keyword/${keyword}`);
 
 export const deleteOne = _id => client.delete(`http://10.0.2.2:8000/post-service/${id}/post}`);
+
+export const comment = ({
+    postId,
+    userId,
+    writer,
+    content
+}) => client.post(`http://10.0.2.2:8000/post-service/comment`, {
+    postId,
+    userId,
+    writer,
+    content
+});
+
+export const deleteComment = _id => client.delete(`http://10.0.2.2:8000/post-service/${_id}/comment`);

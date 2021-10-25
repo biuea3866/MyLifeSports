@@ -71,9 +71,16 @@ export class PostService {
             const dtos: Array<PostDto> = [];
 
             for(const entity of entities) {
-                const comments: any = await this.commentModel.find({ postId: entity._id });
-                
-                dtos.push(entity.push(comments));
+                dtos.push(Builder(PostDto)._id(entity._id)
+                                          .title(entity.title)
+                                          .content(entity.content)
+                                          .type(entity.type)
+                                          .userId(entity.userId)
+                                          .writer(entity.writer)
+                                          .createdAt(entity.createdAt)
+                                          .rental(entity.rental)
+                                          .comments(await this.commentModel.find({ postId: entity._id }))
+                                          .build());
             }
 
             return await Object.assign({
@@ -141,9 +148,16 @@ export class PostService {
             const dtos: Array<PostDto> = [];
 
             for(const entity of entities) {
-                const comments: any = await this.commentModel.find({ postId: entity._id });
-
-                dtos.push(entity.push(comments));
+                dtos.push(Builder(PostDto)._id(entity._id)
+                                          .title(entity.title)
+                                          .content(entity.content)
+                                          .type(entity.type)
+                                          .userId(entity.userId)
+                                          .writer(entity.writer)
+                                          .createdAt(entity.createdAt)
+                                          .rental(entity.rental)
+                                          .comments(await this.commentModel.find({ postId: entity._id }))
+                                          .build());
             }
 
             return await Object.assign({
@@ -175,9 +189,16 @@ export class PostService {
             const dtos: Array<PostDto> = [];
 
             for(const entity of entities) {
-                const comments: any = await this.commentModel.find({ postId: entity._id });
-
-                dtos.push(entity.push(comments));
+                dtos.push(Builder(PostDto)._id(entity._id)
+                                          .title(entity.title)
+                                          .content(entity.content)
+                                          .type(entity.type)
+                                          .userId(entity.userId)
+                                          .writer(entity.writer)
+                                          .createdAt(entity.createdAt)
+                                          .rental(entity.rental)
+                                          .comments(await this.commentModel.find({ postId: entity._id }))
+                                          .build());
             }
 
             return await Object.assign({
@@ -216,9 +237,16 @@ export class PostService {
             const dtos: Array<PostDto> = [];
 
             for(const entity of entities) {
-                const comments: any = await this.commentModel.find({ postId: entity._id });
-
-                dtos.push(entity.push(comments));
+                dtos.push(Builder(PostDto)._id(entity._id)
+                                          .title(entity.title)
+                                          .content(entity.content)
+                                          .type(entity.type)
+                                          .userId(entity.userId)
+                                          .writer(entity.writer)
+                                          .createdAt(entity.createdAt)
+                                          .rental(entity.rental)
+                                          .comments(await this.commentModel.find({ postId: entity._id }))
+                                          .build());
             }
 
             return await Object.assign({

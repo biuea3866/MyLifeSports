@@ -12,6 +12,7 @@ import payments, { paymentsSaga } from "./payments";
 import rentals, { rentalsSaga } from "./rentals";
 import post, { postSaga } from "./post";
 import posts, { postsSaga } from "./posts";
+import comment, { commentSaga } from "./comment";
 
 const rootReducer = combineReducers({
     auth,
@@ -26,6 +27,7 @@ const rootReducer = combineReducers({
     payments,
     post,
     posts,
+    comment,
 });
 
 export function* rootSaga() {
@@ -39,7 +41,8 @@ export function* rootSaga() {
         paymentSaga(),
         paymentsSaga(),
         postSaga(),
-        postsSaga()
+        postsSaga(),
+        commentSaga()
     ]);
 };
 

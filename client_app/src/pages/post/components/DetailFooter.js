@@ -1,28 +1,58 @@
-import React from 'react';
-import { StyleSheet, TextInput, TouchableOpacity, View } from 'react-native';
+import React, { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { StyleSheet, TextInput, View } from 'react-native';
 import palette from '../../../styles/palette';
-import Icon from 'react-native-vector-icons/Ionicons';
+import CommentButton from './CommentButton';
+import { changeField } from '../../../modules/comment';
+import CommentList from './CommentList';
 
 const DetailFooter = post => {
-    const onChat = e => {
-
+    const dispatch = useDispatch();
+    const {
+        userId,
+        nickname,
+        content,
+    } = useSelector(({ 
+        user,
+        comment
+    }) => ({
+        userId: user.user.userId,
+        nickname: user.user.nickname,
+        content: comment.content
+    }));
+    const onChange = e => {
+        dispatch(changeField({
+            key: 'content',
+            value: e.nativeEvent.text
+        }));
     };
+
+    useEffect(() => {
+        dispatch(changeField({
+            key: 'userId',
+            value: userId
+        }))
+    }, [dispatch, userId]);
+
+    useEffect(() => {
+        dispatch(changeField({
+            key: 'writer',
+            value: nickname
+        }));
+    }, [dispatch, nickname]);
 
     return(
         <View style={ styles.container }>
             <View style={ styles.search_box }>
                 <TextInput style={ styles.input }
                            multiline={ true }
+                           onChange={ onChange }
+                           value={ content }
                 />
-                <TouchableOpacity onPress={ onChat }>
-                    <Icon name={ 'ios-paper-plane-outline' }
-                          size={ 30 }
-                          color={ palette.blue[1] }
-                    />
-                </TouchableOpacity>
+                <CommentButton />
             </View>
             <View style={ styles.comment_box }>
-                {/* Add chat */}
+                <CommentList comments={ post.post.comments } />
             </View>
         </View>
     );

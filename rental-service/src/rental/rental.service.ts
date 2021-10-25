@@ -105,9 +105,9 @@ export class RentalService {
 
     public async getRentals(userId: string): Promise<any> {
         try {
-            const result: any = await this.rentalModel.find({ userId: userId });
+            const entities: any = await this.rentalModel.find({ userId: userId });
 
-            if(!result) {
+            if(!entities) {
                 return await Object.assign({
                     statusCode: statusConstants.ERROR,
                     payload: null,
@@ -115,32 +115,30 @@ export class RentalService {
                 });
             }
 
-            const dtoRentals: Array<ResponseRental> = [];
+            const dtos: Array<ResponseRental> = [];
 
-            for(const el of result) {
-                const payment = await this.httpService.get(`http://localhost:8000/payment-service/${el.rentalId}/payment-from-rental`)
+            for(const entity of entities) {
+                const payment = await this.httpService.get(`http://localhost:8000/payment-service/${entity.rentalId}/payment-from-rental`)
                                                       .toPromise();
                 
-                const dto = Builder(RentalDto).rentalId(el.rentalId)
-                                              .price(el.price)
-                                              .borrower(el.borrower)
-                                              .tel(el.tel)
-                                              .userId(el.userId)
-                                              .date(el.date)
-                                              .time(el.time)
-                                              .mapId(el.mapId)
-                                              .mapName(el.mapName)
-                                              .status(el.status)
-                                              .createdAt(el.createdAt)
-                                              .payment(payment.data.payload)
-                                              .build();
-                
-                dtoRentals.push(dto);
+                dtos.push(Builder(RentalDto).rentalId(entity.rentalId)
+                                            .price(entity.price)
+                                            .borrower(entity.borrower)
+                                            .tel(entity.tel)
+                                            .userId(entity.userId)
+                                            .date(entity.date)
+                                            .time(entity.time)
+                                            .mapId(entity.mapId)
+                                            .mapName(entity.mapName)
+                                            .status(entity.status)
+                                            .createdAt(entity.createdAt)
+                                            .payment(payment.data.payload)
+                                            .build());
             }
 
             return await Object.assign({
                 statusCode: statusConstants.SUCCESS,
-                payload: dtoRentals,
+                payload: dtos,
                 message: "Success transcation",
             });
         } catch(err) {

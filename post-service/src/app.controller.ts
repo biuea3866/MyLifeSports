@@ -248,13 +248,10 @@ export class AppController {
         } 
     }
 
-    @Post(':_id/comment')
-    public async comment(
-        @Param('_id') _id: string,
-        @Body() requestComment: RequestComment
-    ) : Promise<any> {
+    @Post('comment')
+    public async comment(@Body() requestComment: RequestComment) : Promise<any> {
         try {
-            const dto: any = await this.postService.comment(Builder(CommentDto).postId(_id)
+            const dto: any = await this.postService.comment(Builder(CommentDto).postId(requestComment.postId)
                                                                                .userId(requestComment.userId)
                                                                                .writer(requestComment.writer)
                                                                                .content(requestComment.content)
@@ -270,7 +267,7 @@ export class AppController {
 
             return await Object.assign({
                 status: HttpStatus.CREATED,
-                payload: null,
+                payload: statusConstants.SUCCESS,
                 message: "Successful save comment"
             });
         } catch(err) {
@@ -297,7 +294,7 @@ export class AppController {
 
             return await Object.assign({
                 status: HttpStatus.NO_CONTENT,
-                payload: null,
+                payload: statusConstants.SUCCESS,
                 message: "Successful delete comment"
             });
         } catch(err) {

@@ -10,11 +10,26 @@ import DetailFragment from './components/DetailFragment';
 const PostDetailScreen = () => {
     const route = useRoute();
     const dispatch = useDispatch();
-    const { post } = useSelector(({ posts }) => ({ post: posts.post }));
+    const { 
+        post,
+        message,
+    } = useSelector(({ 
+        posts,
+        comment,
+    }) => ({ 
+        post: posts.post,
+        message: comment.message,
+    }));
 
     useEffect(() => {
         dispatch(readPost(route.params._id));
     }, [dispatch, route]);
+
+    useEffect(() => {
+        if(message) {
+            dispatch(readPost(route.params._id));
+        }
+    }, [dispatch, message]);
 
     return(
         <ScrollView style={ styles.container }>
