@@ -3,12 +3,17 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Builder } from 'builder-pattern';
 import { Model } from 'mongoose';
 import { statusConstants } from 'src/constants/status.constants';
+import { CommentDto } from 'src/dto/comment.dto';
 import { PostDto } from 'src/dto/post.dto';
+import { Comment, CommentDocument } from 'src/schema/comment.schema';
 import { Post, PostDocument } from 'src/schema/post.schema';
 
 @Injectable()
 export class PostService {
-    constructor(@InjectModel(Post.name) private postModel: Model<PostDocument>) {}
+    constructor(
+        @InjectModel(Post.name) private postModel: Model<PostDocument>,
+        @InjectModel(Comment.name) private commentModel: Model<CommentDocument>
+    ) {}
 
     public async write(dto: PostDto): Promise<any> {
         try {
@@ -21,7 +26,7 @@ export class PostService {
                                                                       .rental(dto.rental ? dto.rental : null)
                                                                       .build())
                                                                       .save();
-
+            
             if(!entity) {
                 return await Object.assign({
                     status: statusConstants.ERROR,
@@ -55,7 +60,6 @@ export class PostService {
         try {
             const entities: any = await this.postModel.find();
 
-            console.log(entities);
             if(!entities) {
                 return await Object.assign({
                     status: statusConstants.SUCCESS,
@@ -67,7 +71,9 @@ export class PostService {
             const dtos: Array<PostDto> = [];
 
             for(const entity of entities) {
-                dtos.push(entity);
+                const comments: any = await this.commentModel.find({ postId: entity._id });
+                
+                dtos.push(entity.push(comments));
             }
 
             return await Object.assign({
@@ -86,9 +92,10 @@ export class PostService {
 
     public async getOne(_id: string): Promise<any> {
         try {    
-            const entity: any = await this.postModel.findOne({ _id: _id });
+            const post: any = await this.postModel.findOne({ _id: _id });
+            const comments: any = await this.commentModel.find({ postId: post._id });
 
-            if(!entity) {
+            if(!post) {
                 return await Object.assign({
                     status: statusConstants.SUCCESS,
                     payload: null,
@@ -98,14 +105,15 @@ export class PostService {
 
             return await Object.assign({
                 status: statusConstants.SUCCESS,
-                payload: Builder(PostDto)._id(String(entity._id))
-                                         .title(entity.title)
-                                         .content(entity.content)
-                                         .type(entity.type)
-                                         .userId(entity.userId)
-                                         .writer(entity.writer)
-                                         .createdAt(entity.createdAt)
-                                         .rental(entity.rental)
+                payload: Builder(PostDto)._id(String(post._id))
+                                         .title(post.title)
+                                         .content(post.content)
+                                         .type(post.type)
+                                         .userId(post.userId)
+                                         .writer(post.writer)
+                                         .createdAt(post.createdAt)
+                                         .rental(post.rental)
+                                         .comments(comments)
                                          .build(),
                 message: "Successful transaction"
             });
@@ -133,7 +141,9 @@ export class PostService {
             const dtos: Array<PostDto> = [];
 
             for(const entity of entities) {
-                dtos.push(entity);
+                const comments: any = await this.commentModel.find({ postId: entity._id });
+
+                dtos.push(entity.push(comments));
             }
 
             return await Object.assign({
@@ -165,7 +175,9 @@ export class PostService {
             const dtos: Array<PostDto> = [];
 
             for(const entity of entities) {
-                dtos.push(entity);
+                const comments: any = await this.commentModel.find({ postId: entity._id });
+
+                dtos.push(entity.push(comments));
             }
 
             return await Object.assign({
@@ -204,7 +216,9 @@ export class PostService {
             const dtos: Array<PostDto> = [];
 
             for(const entity of entities) {
-                dtos.push(entity);
+                const comments: any = await this.commentModel.find({ postId: entity._id });
+
+                dtos.push(entity.push(comments));
             }
 
             return await Object.assign({
@@ -224,6 +238,7 @@ export class PostService {
     public async deletePost(_id: string): Promise<any> {
         try {    
             const result: any = await this.postModel.deleteOne({ _id: _id });
+            await this.commentModel.deleteMany({ postId: _id });
 
             if(!result) {
                 return await Object.assign({
@@ -246,4 +261,62 @@ export class PostService {
             });
         }
     } 
+
+    public async comment(dto: CommentDto): Promise<any> {
+        try {
+            const entity: any = await new this.commentModel(Builder(Comment).postId(dto.postId)
+                                                                            .userId(dto.userId)
+                                                                            .writer(dto.writer)
+                                                                            .content(dto.content)
+                                                                            .createdAt(new Date().toString())
+                                                                            .build())
+                                                                            .save();
+            
+            if(!entity) {
+                return await Object.assign({
+                    status: statusConstants.ERROR,
+                    payload: null,
+                    message: "post-service: database error"
+                });
+            }
+
+            return await Object.assign({
+                status: statusConstants.SUCCESS,
+                payload: null,
+                message: "Successful transaction"
+            });
+        } catch(err) {
+            return await Object.assign({
+                status: statusConstants.ERROR,
+                payload: null,
+                message: "post-service: " + err,
+            })
+        }
+    }
+
+    public async deleteComment(_id: string): Promise<any> {
+        try {
+            const result: any = await this.commentModel.deleteOne({ _id: _id });
+
+            if(!result) {
+                return await Object.assign({
+                    status: statusConstants.ERROR,
+                    payload: null,
+                    message: "post-service: database error"
+                });
+            }
+
+            return await Object.assign({
+                status: statusConstants.SUCCESS,
+                payload: null,
+                message: "Successful transaction"
+            });
+        } catch(err) {
+            return await Object.assign({
+                status: statusConstants.ERROR,
+                payload: null,
+                message: "post-service: " + err
+            });
+        }
+    }
 }

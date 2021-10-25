@@ -23,4 +23,6 @@ export class PostDto {
     createdAt: string;
 
     rental: any;
+
+    comments: any;
 }

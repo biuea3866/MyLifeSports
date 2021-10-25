@@ -1,8 +1,10 @@
 import { Body, Controller, Delete, Get, HttpStatus, Param, Post } from "@nestjs/common";
 import { Builder } from "builder-pattern";
 import { statusConstants } from "./constants/status.constants";
+import { CommentDto } from "./dto/comment.dto";
 import { PostDto } from "./dto/post.dto";
 import { PostService } from "./post/post.service";
+import { RequestComment } from "./vo/request.comment";
 import { RequestPost } from "./vo/request.post";
 import { ResponsePost } from "./vo/response.post";
 
@@ -140,6 +142,7 @@ export class AppController {
                                               .writer(dto.payload.writer)
                                               .createdAt(dto.payload.createdAt)
                                               .rental(dto.payload.rental)
+                                              .comments(dto.payload.comments)
                                               .build(),
                 message: "Get post data",
             });
@@ -243,5 +246,66 @@ export class AppController {
                 message: "Error message: " + err
             });
         } 
+    }
+
+    @Post(':_id/comment')
+    public async comment(
+        @Param('_id') _id: string,
+        @Body() requestComment: RequestComment
+    ) : Promise<any> {
+        try {
+            const dto: any = await this.postService.comment(Builder(CommentDto).postId(_id)
+                                                                               .userId(requestComment.userId)
+                                                                               .writer(requestComment.writer)
+                                                                               .content(requestComment.content)
+                                                                               .build());
+
+            if(dto.status === statusConstants.ERROR) {
+                return await Object.assign({
+                    status: HttpStatus.INTERNAL_SERVER_ERROR,
+                    payload: null,
+                    message: "Error message: " + dto.message,
+                });
+            }
+
+            return await Object.assign({
+                status: HttpStatus.CREATED,
+                payload: null,
+                message: "Successful save comment"
+            });
+        } catch(err) {
+            return await Object.assign({
+                status: HttpStatus.BAD_REQUEST,
+                payload: null,
+                message: "Error message: " + err
+            });
+        }
+    }
+
+    @Delete(':_id/comment')
+    public async deleteComment(@Param('_id') _id: string) : Promise<any> {
+        try {
+            const dto: any = await this.postService.deleteComment(_id);
+
+            if(dto.status === statusConstants.ERROR) {
+                return await Object.assign({
+                    status: HttpStatus.INTERNAL_SERVER_ERROR,
+                    payload: null,
+                    message: "Error message: " + dto.message
+                });
+            }
+
+            return await Object.assign({
+                status: HttpStatus.NO_CONTENT,
+                payload: null,
+                message: "Successful delete comment"
+            });
+        } catch(err) {
+            return await Object.assign({
+                status: HttpStatus.BAD_REQUEST,
+                payload: null,
+                message: "Error message: " + err
+            });
+        }
     }
 }

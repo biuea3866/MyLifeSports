@@ -23,4 +23,6 @@ export class ResponsePost {
     createdAt: string;
 
     rental: any;
+
+    comments: any;
 }

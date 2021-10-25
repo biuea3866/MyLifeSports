@@ -1,5 +1,6 @@
 import { Prop, Schema, SchemaFactory } from "@nestjs/mongoose";
-import { SchemaTypes, Types } from "mongoose";
+import { Types } from "mongoose";
+import { Comment } from "src/interfaces/comment.interface";
 import { Rental } from "src/interfaces/rental.interface";
 
 export type PostDocument = Post & Document;
@@ -26,6 +27,9 @@ export class Post {
 
     @Prop({ required: false })
     rental: Rental;
+
+    @Prop({ required: false })
+    comments: Comment[];
 }
 
 export const PostSchema = SchemaFactory.createForClass(Post);
