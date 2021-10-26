@@ -30,6 +30,7 @@ export class AppController{
                 status: HttpStatus.CREATED,
                 payload: Builder(ResponseRoom).roomId(dto.payload.roomId)
                                               .messages(dto.payload.messages)
+                                              .createdAt(dto.payload.createdAt)
                                               .build(),
                 message: "Successfully create message"
             });

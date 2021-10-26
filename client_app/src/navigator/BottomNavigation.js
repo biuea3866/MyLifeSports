@@ -6,10 +6,11 @@ import HomeScreen from '../pages/home/HomeScreen';
 import PostStackNavigation from './post/PostStackNavigation';
 import MapStackNavigation from './map/MapStackNavigation';
 import MyPageStackNavigation from './user/MyPageStackNavigation';
+import MessageStackNavigation from './message/MessageStackNavigation';
 
 const Tab = createBottomTabNavigator();
 
-const BottomNavigation = ({ route }) => {
+const BottomNavigation = () => {
     return(
         <Tab.Navigator
             screenOptions={({ route }) => ({
@@ -29,21 +30,19 @@ const BottomNavigation = ({ route }) => {
                     } else if (route.name === 'MyPage'){
                         iconName = focused ? 'ios-person' : 'ios-person-outline';
                         iconSize = focused ? 32 : 24;
+                    } else if (route.name === "Message") {
+                        iconName = focused ? 'ios-chatbubble' : 'ios-chatbubble-outline';
+                        iconSize = focused ? 32 : 24;
                     }
 
-                    return (
-                        <Icon 
-                            size={ iconSize }
-                            name={ iconName } 
-                            color={ color }
-                        />
-                    )
+                    return <Icon size={ iconSize }
+                                 name={ iconName } 
+                                 color={ color }
+                            />;
                 }
             })}
-
-            tabBarOptions = {{
-                activeTintColor: palette.blue[4],
-                inactiveTintColor: palette.gray[5],
+            tabBarOptions={{
+                keyboardHidesTabar: true
             }}
         >
             <Tab.Screen 
@@ -51,44 +50,27 @@ const BottomNavigation = ({ route }) => {
                 options={{
                     title: 'Life Sport',
                     tabBarLabel: 'Home',
-                    headerStyle: {
-                        backgroundColor: palette.blue[4],
-                    },
+                    headerStyle: { backgroundColor: palette.blue[4] },
                     headerTintColor: palette.white[0],
-                    headerTitleStyle: {
-                        fontWeight: 'bold'
-                    },
+                    headerTitleStyle: { fontWeight: 'bold' },
                 }}
-                children={
-                    () => <HomeScreen />
-                }
+                children={ () => <HomeScreen /> }
             />
-            <Tab.Screen 
-                name="Post"
-                options={{
-                    headerShown: false,
-                }}
-                children={
-                    () => <PostStackNavigation />
-                }
+            <Tab.Screen name="Message" 
+                        options={{ headerShown: false }}
+                        children={ () => <MessageStackNavigation /> }
             />
-            <Tab.Screen 
-                name="Map"
-                options={{
-                    headerShown: false,
-                }}
-                children={
-                    () => <MapStackNavigation />
-                }
+            <Tab.Screen name="Post"
+                        options={{ headerShown: false }}
+                        children={ () => <PostStackNavigation /> }
             />
-            <Tab.Screen 
-                name="MyPage"
-                options={{
-                    headerShown: false
-                }}
-                children={
-                    () => <MyPageStackNavigation />
-                }
+            <Tab.Screen name="Map"
+                        options={{ headerShown: false }}
+                        children={ () => <MapStackNavigation /> }
+            />
+            <Tab.Screen name="MyPage"
+                        options={{ headerShown: false }}
+                        children={ () => <MyPageStackNavigation /> }
             />
         </Tab.Navigator>
     );
