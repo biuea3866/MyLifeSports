@@ -1,17 +1,12 @@
-import { IsDate, IsString } from "class-validator";
+import { IsArray, IsDate, IsString } from "class-validator";
+import { Message } from "src/interfaces/message.interface";
 
 export class RoomDto {
     @IsString()
     roomId: string;
 
-    @IsString()
-    sender: string;
-
-    @IsString()
-    receiver: string;
-
-    @IsString()
-    content: string;
+    @IsArray()
+    messages: Message[];
 
     @IsDate()
     createdAt: Date;

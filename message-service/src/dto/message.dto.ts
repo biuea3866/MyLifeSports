@@ -5,6 +5,9 @@ export class MessageDto {
     roomId: string;
 
     @IsString()
+    messageId: string;
+    
+    @IsString()
     sender: string;
 
     @IsString()
