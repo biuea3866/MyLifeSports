@@ -120,6 +120,88 @@ export class MessageService {
         }
     }
 
+    public async getRooms(nickname: string): Promise<any> {
+        try {
+            const entities: any = await this.roomModel.find({
+                $or: [{ 
+                    'messages.receiver': nickname,
+                }, {
+                    'messages.sender': nickname,
+                }]
+            });
+
+            if(!entities) {
+                return await Object.assign({
+                    status: statusConstants.SUCCESS,
+                    payload: null,
+                    message: "Not exist rooms data"
+                });
+            }
+
+            const dtos: Array<RoomDto> = [];
+
+            for(const entity of entities) {
+                dtos.push(Builder(RoomDto).roomId(entity.roomId)
+                                          .messages(entity.messages)
+                                          .createdAt(entity.createdAt)
+                                          .build());
+            }
+
+            return await Object.assign({
+                status: statusConstants.SUCCESS,
+                payload: dtos,
+                message: "Successful transaction"
+            })
+        } catch(err) {
+            return await Object.assign({
+                status: statusConstants.ERROR,
+                payload: null,
+                message: "message-service: " + err
+            });
+        }
+    }
+
+    public async getRoomsByKeyword(keyword: string): Promise<any> {
+        try {
+            const entities: any = await this.roomModel.find({
+                $or: [{ 
+                    'messages.receiver': keyword,
+                }, {
+                    'messages.sender': keyword,
+                }]
+            });
+
+            if(!entities) {
+                return await Object.assign({
+                    status: statusConstants.SUCCESS,
+                    payload: null,
+                    message: "Not exist rooms data"
+                });
+            }
+
+            const dtos: Array<RoomDto> = [];
+
+            for(const entity of entities) {
+                dtos.push(Builder(RoomDto).roomId(entity.roomId)
+                                          .messages(entity.messages)
+                                          .createdAt(entity.createdAt)
+                                          .build());
+            }
+
+            return await Object.assign({
+                status: statusConstants.SUCCESS,
+                payload: dtos,
+                message: "Successful transaction"
+            })
+        } catch(err) {
+            return await Object.assign({
+                status: statusConstants.ERROR,
+                payload: null,
+                message: "message-service: " + err
+            });
+        }
+    }
+
     public async deleteRoom(roomId: string) {
         try {
             const result: any = await this.roomModel.deleteOne({ roomId: roomId });

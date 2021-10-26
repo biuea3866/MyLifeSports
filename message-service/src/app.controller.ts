@@ -72,6 +72,78 @@ export class AppController{
         }
     }
 
+    @Get(':nickname/rooms')
+    public async getRooms(@Param('nickname') nickname: string): Promise<any> {
+        try {
+            const dtos: any = await this.messageService.getRooms(nickname);
+            
+            if(dtos.status === statusConstants.ERROR) {
+                return await Object.assign({
+                    status: HttpStatus.INTERNAL_SERVER_ERROR,
+                    payload: null,
+                    message: "Error message: " + dtos.message
+                });
+            }
+
+            const responseRooms: Array<ResponseRoom> = [];
+
+            for(const dto of dtos.payload) {
+                responseRooms.push(Builder(ResponseRoom).roomId(dto.roomId)
+                                                        .messages(dto.messages)
+                                                        .createdAt(dto.createdAt)
+                                                        .build());
+            }
+
+            return await Object.assign({
+                status: HttpStatus.OK,
+                payload: responseRooms,
+                message: "Successfully get rooms data"
+            });
+        } catch(err) {
+            return await Object.assign({
+                status: HttpStatus.BAD_REQUEST,
+                payload: null,
+                message: "Error message: " + err
+            });
+        }
+    }
+
+    @Get(':keyword/keyword/rooms')
+    public async getRoomsByKeyword(@Param('keyword') keyword: string): Promise<any> {
+        try {
+            const dtos: any = await this.messageService.getRoomsByKeyword(keyword);
+
+            if(dtos.status === statusConstants.ERROR) {
+                return await Object.assign({
+                    status: HttpStatus.INTERNAL_SERVER_ERROR,
+                    payload: null,
+                    message: "Error message: " + dtos.message
+                });
+            }
+
+            const responseRooms: Array<ResponseRoom> = [];
+
+            for(const dto of dtos.payload) {
+                responseRooms.push(Builder(ResponseRoom).roomId(dto.roomId)
+                                                        .messages(dto.messages)
+                                                        .createdAt(dto.createdAt)
+                                                        .build());
+            }
+
+            return await Object.assign({
+                status: HttpStatus.OK,
+                payload: responseRooms,
+                message: "Successfully get rooms data"
+            });
+        } catch(err) {
+            return await Object.assign({
+                status: HttpStatus.BAD_REQUEST,
+                payload: null,
+                message: "Error message: " + err
+            });
+        }
+    }
+
     @Delete(':roomId/room')
     public async deleteRoom(@Param('roomId') roomId: string): Promise<any> {
         try {
