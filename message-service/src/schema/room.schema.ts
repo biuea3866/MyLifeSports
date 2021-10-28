@@ -9,6 +9,9 @@ export class Room {
     roomId: string;
     
     @Prop({ required: true })
+    users: string[];
+    
+    @Prop({ required: true })
     messages: Message[];
     
     @Prop({ required: true })

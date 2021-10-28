@@ -13,48 +13,48 @@ import { v4 as uuid } from 'uuid';
 export class MessageService {
     constructor(@InjectModel(Room.name) private roomModel: Model<RoomDocument>) {}
 
-    public async create(dto: MessageDto): Promise<any> {
+    public async initRoom(dto: RoomDto): Promise<any> {
         try {
-            const check: any = await this.checkRoom(
-                dto.sender, 
-                dto.receiver
-            );
-            var entity: any = null;
-            
-            if(!check.payload) {
-                entity = Builder(Room).roomId(uuid())
-                                      .messages([])
-                                      .createdAt(new Date())
-                                      .build();
+            const entity: any = await new this.roomModel(Builder(Room).roomId(uuid())
+                                                                      .users([dto.users[0], dto.users[1]])
+                                                                      .messages([])
+                                                                      .createdAt(new Date())
+                                                                      .build())
+                                                                      .save();
 
-                entity.messages.push(Builder(Message).sender(dto.sender)
-                                                     .receiver(dto.receiver)
-                                                     .content(dto.content)
-                                                     .createdAt(new Date())
-                                                     .build());
-
-                entity = await new this.roomModel(entity).save();
-
-                if(!entity) {
-                    return await Object.assign({
-                        status: statusConstants.ERROR,
-                        payload: null,
-                        message: "Successful transaction"                        
-                    });
-                }
-
+            if(!entity) {
                 return await Object.assign({
-                    status: statusConstants.SUCCESS,
-                    payload: Builder(RoomDto).roomId(entity.roomId)
-                                             .messages(entity.messages)
-                                             .createdAt(entity.createdAt)
-                                             .build(),
-                    message: "Successful transaction"                        
+                    status: statusConstants.ERROR,
+                    payload: null,
+                    message: "message-service: database error"
                 });
             }
 
+            return await Object.assign({
+                status: statusConstants.SUCCESS,
+                payload: Builder(RoomDto).roomId(entity.roomId)
+                                         .users(entity.users)
+                                         .messages(entity.messages)
+                                         .createdAt(entity.createdAt)
+                                         .build(),
+                message: "Successful transaction"
+            });
+        } catch(err) {
+            return await Object.assign({
+                status: statusConstants.ERROR,
+                payload: null,
+                message: "message-service: " + err
+            });
+        }
+    }
+
+    public async create(dto: MessageDto): Promise<any> {
+        try {
+            const result: any = await this.checkRoom(dto.sender, dto.receiver);
+            const roomId = result.payload;
+
             await this.roomModel.updateOne(
-                { roomId: check.payload },
+                { roomId: roomId },
                 { $push: {
                         messages: Builder(Message).sender(dto.sender)
                                                   .receiver(dto.receiver)
@@ -64,7 +64,7 @@ export class MessageService {
                 }}
             )
 
-            entity = await this.roomModel.findOne({ roomId: check.payload });
+            const entity = await this.roomModel.findOne({ roomId: roomId });
             
             if(!entity) {
                 return await Object.assign({
@@ -77,6 +77,7 @@ export class MessageService {
             return await Object.assign({
                 status: statusConstants.SUCCESS,
                 payload: Builder(RoomDto).roomId(entity.roomId)
+                                         .users(entity.users)
                                          .messages(entity.messages)
                                          .createdAt(entity.createdAt)
                                          .build(),
@@ -106,6 +107,7 @@ export class MessageService {
             return await Object.assign({
                 status: statusConstants.SUCCESS,
                 payload: Builder(Room).roomId(entity.roomId)
+                                      .users(entity.users)
                                       .messages(entity.messages)
                                       .createdAt(entity.createdAt)
                                       .build(),
@@ -123,11 +125,9 @@ export class MessageService {
     public async getRooms(nickname: string): Promise<any> {
         try {
             const entities: any = await this.roomModel.find({
-                $or: [{ 
-                    'messages.receiver': nickname,
-                }, {
-                    'messages.sender': nickname,
-                }]
+                users: {
+                    $in: [nickname]
+                }
             });
 
             if(!entities) {
@@ -142,6 +142,7 @@ export class MessageService {
 
             for(const entity of entities) {
                 dtos.push(Builder(RoomDto).roomId(entity.roomId)
+                                          .users(entity.users)
                                           .messages(entity.messages)
                                           .createdAt(entity.createdAt)
                                           .build());
@@ -164,11 +165,9 @@ export class MessageService {
     public async getRoomsByKeyword(keyword: string): Promise<any> {
         try {
             const entities: any = await this.roomModel.find({
-                $or: [{ 
-                    'messages.receiver': keyword,
-                }, {
-                    'messages.sender': keyword,
-                }]
+                users: {
+                    $in: [keyword]
+                }
             });
 
             if(!entities) {
@@ -183,6 +182,7 @@ export class MessageService {
 
             for(const entity of entities) {
                 dtos.push(Builder(RoomDto).roomId(entity.roomId)
+                                          .users(entity.users)
                                           .messages(entity.messages)
                                           .createdAt(entity.createdAt)
                                           .build());
@@ -229,21 +229,14 @@ export class MessageService {
     }
 
     public async checkRoom(
-        sender: string,
-        receiver: string
+        user_a: string,
+        user_b: string
     ): Promise<any> {
         try {
             const check: any = await this.roomModel.findOne({
-                $or: [
-                    { 
-                        'messages.sender': sender,
-                        'messages.receiver': receiver,
-                    },
-                    {
-                        'messages.sender': receiver,
-                        'messages.receiver': sender
-                    }
-                ]
+                users: {
+                    $all: [user_a, user_b]
+                }
             });
 
             if(!check) {

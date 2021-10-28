@@ -6,6 +6,9 @@ export class RoomDto {
     roomId: string;
 
     @IsArray()
+    users: string[];
+
+    @IsArray()
     messages: Message[];
 
     @IsDate()

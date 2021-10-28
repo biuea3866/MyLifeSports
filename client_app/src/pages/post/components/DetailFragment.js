@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import DetailHeader from './DetailHeader';
 import DetailArticle from './DetailArticle';
 import DetailContent from './DetailContent';
@@ -18,7 +18,7 @@ const DetailFragment = item => {
     }, [post]);
 
     return(
-        <View>
+        <View style={ styles.container }>
             <DetailHeader post={ post } />
             { info }
             <DetailContent post={ post } />
@@ -26,5 +26,11 @@ const DetailFragment = item => {
         </View>
     );
 };
+
+const styles = StyleSheet.create({
+    container: {
+        flex: 1
+    }
+});
 
 export default DetailFragment;

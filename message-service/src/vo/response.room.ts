@@ -6,6 +6,9 @@ export class ResponseRoom {
     roomId: string;
 
     @IsArray()
+    users: string[];
+    
+    @IsArray()
     messages: Message[];
 
     @IsDate()
