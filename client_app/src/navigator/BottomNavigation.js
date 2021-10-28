@@ -6,6 +6,7 @@ import HomeScreen from '../pages/home/HomeScreen';
 import PostStackNavigation from './post/PostStackNavigation';
 import MapStackNavigation from './map/MapStackNavigation';
 import MyPageStackNavigation from './user/MyPageStackNavigation';
+import MessageStackNavigation from './message/MessageStackNavigation';
 
 const Tab = createBottomTabNavigator();
 
@@ -29,7 +30,10 @@ const BottomNavigation = () => {
                     } else if (route.name === 'MyPage'){
                         iconName = focused ? 'ios-person' : 'ios-person-outline';
                         iconSize = focused ? 32 : 24;
-                    } 
+                    } else if (route.name === "Message") {
+                        iconName = focused ? 'ios-chatbubble' : 'ios-chatbubble-outline';
+                        iconSize = focused ? 32 : 24;
+                    }
 
                     return <Icon size={ iconSize }
                                  name={ iconName } 
@@ -51,6 +55,10 @@ const BottomNavigation = () => {
                     headerTitleStyle: { fontWeight: 'bold' },
                 }}
                 children={ () => <HomeScreen /> }
+            />
+            <Tab.Screen name="Message" 
+                        options={{ headerShown: false }}
+                        children={ () => <MessageStackNavigation /> }
             />
             <Tab.Screen name="Post"
                         options={{ headerShown: false }}

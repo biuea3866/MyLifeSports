@@ -50,9 +50,13 @@ export class MessageService {
 
     public async create(dto: MessageDto): Promise<any> {
         try {
+            console.log(dto);
+
             const result: any = await this.checkRoom(dto.sender, dto.receiver);
             const roomId = result.payload;
 
+            console.log(result);
+            
             await this.roomModel.updateOne(
                 { roomId: roomId },
                 { $push: {

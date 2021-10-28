@@ -13,6 +13,8 @@ import rentals, { rentalsSaga } from "./rentals";
 import post, { postSaga } from "./post";
 import posts, { postsSaga } from "./posts";
 import comment, { commentSaga } from "./comment";
+import room, { roomSaga } from "./room";
+import message, { messageSaga } from "./message";
 
 const rootReducer = combineReducers({
     auth,
@@ -28,6 +30,8 @@ const rootReducer = combineReducers({
     post,
     posts,
     comment,
+    message,
+    room
 });
 
 export function* rootSaga() {
@@ -43,6 +47,8 @@ export function* rootSaga() {
         postSaga(),
         postsSaga(),
         commentSaga(),
+        messageSaga(),
+        roomSaga()
     ]);
 };
 

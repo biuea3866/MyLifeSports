@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, HttpStatus, Param, Post } from "@nestjs/common";
+import { Body, Controller, Delete, Get, HttpStatus, Param, Post, Query } from "@nestjs/common";
 import { Builder } from "builder-pattern";
 import { statusConstants } from "./constants/status.constants";
 import { MessageDto } from "./dto/message.dto";
@@ -229,11 +229,11 @@ export class AppController{
     }
 
     @Get('room/check') 
-    public async checkRoom(@Body() vo: RequestCheckRoom): Promise<any> {
+    public async checkRoom(@Query() query): Promise<any> {
         try {
             const result: any = await this.messageService.checkRoom(
-                vo.user_a,
-                vo.user_b
+                query.user_a,
+                query.user_b
             );
             
             if(result.status === statusConstants.ERROR) {
