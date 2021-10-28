@@ -95,9 +95,9 @@ const room = handleActions(
             ...state,
             [key]: value
         }),
-        [INIT_ROOM_SUCCESS]: (state, { payload: room }) => ({
+        [INIT_ROOM_SUCCESS]: (state, { payload: roomId }) => ({
             ...state,
-            room
+            roomId
         }),
         [INIT_ROOM_FAILURE]: (state, { payload: error }) => ({
             ...state,

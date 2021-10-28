@@ -50,11 +50,7 @@ export class AppController{
 
             return await Object.assign({
                 status: HttpStatus.CREATED,
-                payload: Builder(ResponseRoom).roomId(dto.payload.roomId)
-                                              .users(dto.payload.users)
-                                              .messages(dto.payload.messages)
-                                              .createdAt(dto.payload.createdAt)
-                                              .build(),
+                payload: dto.payload.roomId,
                 message: "Successful make room",
             });
         } catch(err) {

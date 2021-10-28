@@ -1,16 +1,21 @@
 import { useNavigation } from '@react-navigation/native';
 import React from 'react';
 import { Alert, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { deleteRoom } from '../../../modules/room';
 import palette from '../../../styles/palette';
 
 const RoomCard = item => {
     const navigation = useNavigation();
+    const dispatch = useDispatch();
     const { nickname } = useSelector(({ user }) => ({ nickname: user.user.nickname }));
     const toRoom = e => {
         navigation.navigate("MessageRoom", {
-            room: item.item
+            writer: item.item.users[0] === nickname ? item.item.users[1] : item.item.users[0]
         });
+    };
+    const onDelete = e => {
+        dispatch(deleteRoom(item.item.roomId));
     };
     const onAlert = e => {
         Alert.alert(
@@ -19,7 +24,7 @@ const RoomCard = item => {
             [
                 {
                     text: '네, 나갈래요',
-                    onPress: () => console.log("Exit event")
+                    onPress: () => { onDelete }
                 },
                 {
                     text: '아니요',

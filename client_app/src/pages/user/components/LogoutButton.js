@@ -17,7 +17,7 @@ const LogoutButton = () => {
 
         dispatch(logout());
 
-        navigation.navigate('SignIn');
+        navigation.reset('SignIn');
     };
 
     return(

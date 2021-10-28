@@ -15,6 +15,7 @@ import posts, { postsSaga } from "./posts";
 import comment, { commentSaga } from "./comment";
 import room, { roomSaga } from "./room";
 import message, { messageSaga } from "./message";
+import rooms, { roomsSaga } from "./rooms";
 
 const rootReducer = combineReducers({
     auth,
@@ -31,7 +32,8 @@ const rootReducer = combineReducers({
     posts,
     comment,
     message,
-    room
+    room,
+    rooms
 });
 
 export function* rootSaga() {
@@ -48,7 +50,8 @@ export function* rootSaga() {
         postsSaga(),
         commentSaga(),
         messageSaga(),
-        roomSaga()
+        roomSaga(),
+        roomsSaga(),
     ]);
 };
 
