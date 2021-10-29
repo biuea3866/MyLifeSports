@@ -4,7 +4,6 @@ import { statusConstants } from "./constants/status.constants";
 import { MessageDto } from "./dto/message.dto";
 import { RoomDto } from "./dto/room.dto";
 import { MessageService } from "./message/message.service";
-import { RequestCheckRoom } from "./vo/request.check.room";
 import { RequestInitRoom } from "./vo/request.init.room";
 import { RequestMessage } from "./vo/request.message";
 import { ResponseRoom } from "./vo/response.room";

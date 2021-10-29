@@ -4,8 +4,10 @@ import NaverMapView from 'react-native-nmap';
 import CustomMarker from './CustomMarker';
 import { useDispatch, useSelector } from 'react-redux';
 import { listAll } from '../../../modules/maps';
+import { useRoute } from '@react-navigation/core';
 
 const NaverMap = () => {
+    const route = useRoute();
     const { 
         visible,
         maps,
@@ -23,14 +25,14 @@ const NaverMap = () => {
         latitude: 37.6009735, 
         longitude: 126.9484764
     };
-    
-    useEffect(() => {
-        dispatch(listAll());
 
-        if(error) {
-            console.log(error)
+    useEffect(() => {
+        console.log(route.params);
+
+        if(!route.params) {
+            dispatch(listAll());
         }
-    }, [dispatch, error]);
+    }, [dispatch, route.params]);
 
     return(
         <NaverMapView style={ 
@@ -47,13 +49,7 @@ const NaverMap = () => {
         >
             {
                 maps &&
-                maps.map(
-                    (map, i) => {
-                        return <CustomMarker key={ i }
-                                             data={ map } 
-                               />
-                    }
-                )
+                maps.map(map => { return <CustomMarker data={ map } /> })
             }
         </NaverMapView>
     );

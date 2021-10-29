@@ -19,8 +19,25 @@ import shoot from '../../assets/img/shoot.png';
 import swim from '../../assets/img/swim.png';
 import volleyball from '../../assets/img/volleyball.png';
 import tennis from '../../assets/img/tennis.png';
+import { useDispatch } from 'react-redux';
+import { listType } from '../../modules/maps';
+import { useNavigation } from '@react-navigation/core';
 
-const ImageIcon = ({ name, text }) => {
+const ImageIcon = ({ 
+    name, 
+    text,
+    type_nm
+}) => {
+    const dispatch = useDispatch();
+    const navigation = useNavigation();
+    const onClick = e => {
+        dispatch(listType(type_nm));
+
+        navigation.navigate("Map", {
+            "type_nm": type_nm
+        });
+    };
+
     if(name === "arrow") name = arrow
     else if(name === "badminton") name = badminton
     else if(name === "climb") name = climb 
@@ -36,7 +53,7 @@ const ImageIcon = ({ name, text }) => {
 
     return(
         <View style={ styles.container }>
-            <TouchableOpacity>
+            <TouchableOpacity onPress={ onClick }>
                 <Image style={ styles.icon }
                        source={ name }
                 />

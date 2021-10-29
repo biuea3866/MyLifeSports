@@ -6,15 +6,29 @@ import {
     TouchableOpacity 
 } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
+import { useNavigation } from '@react-navigation/core';
 import palette from '../palette';
+import { useDispatch } from 'react-redux';
+import { listType } from '../../modules/maps';
 
 const CategoryIcon = ({ 
     name, 
-    text 
+    text,
+    type_nm,
 }) => {
+    const navigation = useNavigation();
+    const dispatch = useDispatch();
+    const onClick = e => {
+        dispatch(listType(type_nm));
+
+        navigation.navigate("Map", {
+            "type_nm": type_nm
+        });
+    };
+
     return(
         <View style={ styles.container }>
-            <TouchableOpacity>
+            <TouchableOpacity onPress={ onClick }>
                 <Icon size={ 48 }
                       name={ name }
                       color={ palette.blue[4] }
